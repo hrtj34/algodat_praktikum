@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AlgoDat_Praktikum
 {
-    interface IMultiSetSorted
+    class Treap : BinSearchTree
     {
     }
 }

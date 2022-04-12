@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AlgoDat_Praktikum
 {
-    interface ISetUnsorted
+    interface ISetUnsorted : IDictionary
     {
     }
 }

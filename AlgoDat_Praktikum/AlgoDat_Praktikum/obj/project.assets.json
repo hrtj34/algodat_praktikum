@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lukas\\source\\repos\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\AlgoDat_Praktikum.csproj",
+      "projectUniqueName": "C:\\Users\\Lukas\\Studium\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\AlgoDat_Praktikum.csproj",
       "projectName": "AlgoDat_Praktikum",
-      "projectPath": "C:\\Users\\Lukas\\source\\repos\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\AlgoDat_Praktikum.csproj",
+      "projectPath": "C:\\Users\\Lukas\\Studium\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\AlgoDat_Praktikum.csproj",
       "packagesPath": "C:\\Users\\Lukas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lukas\\source\\repos\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\obj\\",
+      "outputPath": "C:\\Users\\Lukas\\Studium\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lukas\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -60,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.406\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -6,7 +6,7 @@ namespace AlgoDat_Praktikum
 {
     class BinSearchTree : ISetSorted
     {
-        class TreeNode : BaseNode
+        protected class TreeNode : BaseNode
         {
             public TreeNode left;
             public TreeNode right;

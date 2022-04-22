@@ -6,85 +6,89 @@ namespace AlgoDat_Praktikum
 {
     class Treap : BinSearchTree
     {
-        class Node
+        class TreapNode : TreeNode
         {
-            public int elem;
-            public int priority;
+            public int prio;
             //public int level;
             Random zufall = new Random();
-            public Node left;
-            public Node right;
-            public Node prev;
-            public Node(int elem)
+            public TreapNode(int elem) : base(elem) //eigentlicher Konstruktor 
             {
-                this.elem = elem;
-                priority = zufall.Next(100);
+                prio = zufall.Next(100);
             }
 
-            public Node(int elem, int priority)
+            public TreapNode(int elem, int priority) : base(elem) // Konstruktor zum Debuggen
             {
-                this.elem = elem;
-                this.priority = priority;
+                this.prio = priority;
             }
 
-            public override string ToString() => $"({elem}, {priority})";
+            public override string ToString() => $"({key}, {prio})";
         }
 
-        Node root;
+        TreapNode root;
         //int maxLevel = 0;
-
-        bool binInsert(Node newNode) //zukuenftig aus Klasse BinTree
+        private bool search(ref TreeNode node, int elem)
         {
-            Node elem = root;
-            bool done = false;
-            //int count = 1;
-
-            while (!done)
+            while (true)
             {
                 //newNode.level = count++;
-                if(elem.elem == newNode.elem)
+                if(node.key == elem)
                 {
-                    break;
+                    return true;
                 }
-                else if(elem.elem < newNode.elem)
+                else if(node.key < elem)
                 {
-                    if (elem.right == null)
+                    if (node.right == null)
                     {
-                        elem.right = newNode;
-                        newNode.prev = elem;
-                        done = true;
+                        return false;
                     }
                     else
-                        elem = elem.right;
+                        node = node.right;
                 }
                 else
                 {
-                    if (elem.left == null)
+                    if (node.left == null)
                     {
-                        elem.left = newNode;
-                        newNode.prev = elem;
-                        done = true;
+                        return false;
                     }
                     else
-                        elem = elem.left;
+                        node = node.left;
                 }
             }
-            return done;
+        }
+
+        protected bool binInsert(ref TreeNode currentNode, int elem) //zukuenftig aus Klasse BinTree
+        {
+            //int count = 1;
+            if(!search(ref currentNode,elem))
+            {
+                TreapNode newNode = new TreapNode(elem);
+                if (currentNode.key < elem)
+                {
+                    currentNode.right = newNode;
+                    newNode.prev = currentNode;
+                    currentNode = currentNode.right;
+                }
+                else
+                {
+                    currentNode.left = newNode;
+                    newNode.prev = currentNode;
+                    currentNode = currentNode.left;
+                }
+                return true;
+            }
+            else
+                return false;
         }
 
 //Rotation Funktionen ebenfalls moeglicherweiser aus BinTree
-        void leftRotation(Node currentNode)
+        void leftRotation(TreapNode currentNode)
         {
             if(currentNode.prev == root)
             {
                 currentNode.prev.right = currentNode.left;
                 if (currentNode.left != null)
                     currentNode.left = currentNode.prev;
-                //if (currentNode.prev == currentNode.prev.prev.left)
-                //    currentNode.prev.prev.left = currentNode;
-                //else
-                //    currentNode.prev.prev.right = currentNode;
-                Node temp = currentNode.prev;
+                TreeNode temp = currentNode.prev;   //evt. falscher Typ
                 currentNode.prev = currentNode.prev.prev;
                 temp.prev = currentNode;
                 root = currentNode;
@@ -99,12 +103,12 @@ namespace AlgoDat_Praktikum
                     currentNode.prev.prev.left = currentNode;
                 else
                     currentNode.prev.prev.right = currentNode;
-                Node temp = currentNode.prev;
+                TreeNode temp = currentNode.prev;   //evt. falscher Typ
                 currentNode.prev = currentNode.prev.prev;
                 temp.prev = currentNode;
             }
         }
-        void rightRotiation(Node currentNode)
+        void rightRotiation(TreapNode currentNode)
         {
             if (currentNode.prev == root)
             {
@@ -112,11 +116,7 @@ namespace AlgoDat_Praktikum
                 if (currentNode.right != null)
                     currentNode.right.prev = currentNode.prev;
                 currentNode.right = currentNode.prev;
-                //if (currentNode.prev.prev.right == currentNode.prev)
-                //    currentNode.prev.prev.right = currentNode;
-                //else
-                //    currentNode.prev.prev.left = currentNode;
-                Node temp = currentNode.prev;
+                TreeNode temp = currentNode.prev;   //evt. falscher Typ
                 currentNode.prev = currentNode.prev.prev;
                 temp.prev = currentNode;
                 root = currentNode;
@@ -131,16 +131,16 @@ namespace AlgoDat_Praktikum
                     currentNode.prev.prev.right = currentNode;
                 else
                     currentNode.prev.prev.left = currentNode;
-                Node temp = currentNode.prev;
+                TreeNode temp = currentNode.prev;   //evt. falscher Typ
                 currentNode.prev = currentNode.prev.prev;
                 temp.prev = currentNode;
             }
         }
-        void heapRotation(Node currentNode)
+        void heapRotation(TreapNode currentNode)
         {
-            if(currentNode.prev == root && currentNode.priority < root.priority)
+            if(currentNode.prev == root && currentNode.prio < root.prio)
             {
-                Node temp = root;
+                TreapNode temp = root;
                 if(root.left == currentNode)
                 {
                     root = currentNode;
@@ -157,7 +157,7 @@ namespace AlgoDat_Praktikum
             }
             else
             {
-                while(currentNode.prev.priority > currentNode.priority)
+                while((currentNode.prev as TreapNode).prio > currentNode.prio)
                 {
                     if (currentNode.prev.right == currentNode)
                         leftRotation(currentNode);
@@ -167,17 +167,17 @@ namespace AlgoDat_Praktikum
             }
         }
 
-        public bool insert(int elem)
+        public new bool insert(int elem)
         {
             if(root == null)
             {
-                root = new Node(elem);
+                root = new TreapNode(elem);
                 //root.level = 0;
                 return true;
             }
             else
             {
-                Node newNode = new Node(elem);
+                TreapNode newNode = new TreapNode(elem);
                 bool inserted = binInsert(newNode);
                 if(inserted)
                     heapRotation(newNode);
@@ -203,7 +203,7 @@ namespace AlgoDat_Praktikum
             PrintHorizontal(root, 0);
         }
 
-        string PrintHorizontal(Node current, int n)
+        string PrintHorizontal(TreeNode current, int n)
         {
             string res = "";
             if(current != null)
@@ -216,13 +216,6 @@ namespace AlgoDat_Praktikum
                 res += $"--{current}";
                 res += PrintHorizontal(current.left, n + 1);
             }
-            return res;
-        }
-
-        public override string ToString()
-        {
-            string res = "";
-            res += PrintHorizontal(root, 0);
             return res;
         }
     }

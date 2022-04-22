@@ -6,6 +6,16 @@ namespace AlgoDat_Praktikum
 {
     class BinSearchTree : ISetSorted
     {
+        class TreeNode : BaseNode
+        {
+            public TreeNode left;
+            public TreeNode right;
+            public TreeNode prev;
+
+            public TreeNode(int Key) : base(Key) {}
+
+        }
+
         public bool delete(int elem)
         {
             throw new NotImplementedException();

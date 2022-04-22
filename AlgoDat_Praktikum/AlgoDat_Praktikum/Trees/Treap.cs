@@ -16,71 +16,11 @@ namespace AlgoDat_Praktikum
                 prio = zufall.Next(100);
             }
 
-            public TreapNode(int elem, int priority) : base(elem) // Konstruktor zum Debuggen
-            {
-                this.prio = priority;
-            }
-
             public override string ToString() => $"({key}, {prio})";
         }
 
-        TreapNode root;
-        //int maxLevel = 0;
-        private bool search(ref TreeNode node, int elem)
-        {
-            while (true)
-            {
-                //newNode.level = count++;
-                if(node.key == elem)
-                {
-                    return true;
-                }
-                else if(node.key < elem)
-                {
-                    if (node.right == null)
-                    {
-                        return false;
-                    }
-                    else
-                        node = node.right;
-                }
-                else
-                {
-                    if (node.left == null)
-                    {
-                        return false;
-                    }
-                    else
-                        node = node.left;
-                }
-            }
-        }
-
-        protected bool binInsert(ref TreeNode currentNode, int elem) //zukuenftig aus Klasse BinTree
-        {
-            //int count = 1;
-            if(!search(ref currentNode,elem))
-            {
-                TreapNode newNode = new TreapNode(elem);
-                if (currentNode.key < elem)
-                {
-                    currentNode.right = newNode;
-                    newNode.prev = currentNode;
-                    currentNode = currentNode.right;
-                }
-                else
-                {
-                    currentNode.left = newNode;
-                    newNode.prev = currentNode;
-                    currentNode = currentNode.left;
-                }
-                return true;
-            }
-            else
-                return false;
-        }
-
-//Rotation Funktionen ebenfalls moeglicherweiser aus BinTree
+        
+        //Rotation Funktionen ebenfalls moeglicherweiser aus BinTree
         void leftRotation(TreapNode currentNode)
         {
             if(currentNode.prev == root)
@@ -138,21 +78,24 @@ namespace AlgoDat_Praktikum
         }
         void heapRotation(TreapNode currentNode)
         {
-            if(currentNode.prev == root && currentNode.prio < root.prio)
+            if(currentNode.prev == root && currentNode.prio < (root as TreapNode).prio)
             {
-                TreapNode temp = root;
-                if(root.left == currentNode)
+                TreeNode temp = root;
+                if(root.right == currentNode)
                 {
                     root = currentNode;
                     root.left = temp;
                     root.prev = null;
                     temp.prev = root;
+                    temp.right = null;
                 }
                 else
                 {
                     root = currentNode;
                     root.right = temp;
+                    root.prev = null;
                     temp.prev = root;
+                    temp.left = null;
                 }
             }
             else
@@ -167,56 +110,23 @@ namespace AlgoDat_Praktikum
             }
         }
 
-        public new bool insert(int elem)
+        public override bool insert(int elem)
         {
             if(root == null)
             {
                 root = new TreapNode(elem);
-                //root.level = 0;
                 return true;
             }
             else
             {
-                TreapNode newNode = new TreapNode(elem);
-                bool inserted = binInsert(newNode);
-                if(inserted)
-                    heapRotation(newNode);
-                //if (newNode.level > maxLevel)
-                    //maxLevel = newNode.level;
-                return inserted;
+                TreeNode newNode = new TreapNode(elem);
+                if (binInsert(ref newNode, elem))
+                {
+                    heapRotation(newNode as TreapNode);
+                    return true;
+                }
+                return false;
             }
-        }
-
-        public bool search(int elem) //ebenfalls aus BinTree erben
-        {
-            return true;
-        }
-
-        public bool delete(int elem)
-        {
-            return true;
-        }
-
-        // Horizontale Ausgabe eines Treaps mit Einrückungen
-        public void Print()
-        {
-            PrintHorizontal(root, 0);
-        }
-
-        string PrintHorizontal(TreeNode current, int n)
-        {
-            string res = "";
-            if(current != null)
-            {
-                
-                res += PrintHorizontal(current.right, n + 1);
-                res += "\n";
-                for (int i = 0; i < n; i++)
-                    res += "\t";
-                res += $"--{current}";
-                res += PrintHorizontal(current.left, n + 1);
-            }
-            return res;
         }
     }
 }

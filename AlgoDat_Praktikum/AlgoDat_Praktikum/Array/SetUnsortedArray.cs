@@ -4,26 +4,16 @@ using System.Text;
 
 namespace AlgoDat_Praktikum
 {
-    class SetUnsortedArray : ISetUnsorted
+    class SetUnsortedArray : MultiSetUnsortedArray
     {
-        public bool delete(int elem)
-        {
-            throw new NotImplementedException();
-        }
+        public SetUnsortedArray(int al) : base(al) { }
 
-        public bool insert(int elem)
+        new public bool insert(int elem)
         {
-            throw new NotImplementedException();
-        }
-
-        public void print()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool search(int elem)
-        {
-            throw new NotImplementedException();
+            if (search(elem))
+                return false;
+            else
+                return base.insert(elem);
         }
     }
 }

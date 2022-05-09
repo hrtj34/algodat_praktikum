@@ -21,6 +21,10 @@ namespace AlgoDat_Praktikum
 
         
         //Rotation Funktionen ebenfalls moeglicherweiser aus BinTree
+        /// <summary>
+        /// private function that rotates a node left
+        /// </summary>
+        /// <param name="currentNode"></param>
         void leftRotation(TreapNode currentNode)
         {
             if(currentNode.prev == root)
@@ -48,6 +52,11 @@ namespace AlgoDat_Praktikum
                 temp.prev = currentNode;
             }
         }
+        
+        /// <summary>
+        /// private function that rotates a node right
+        /// </summary>
+        /// <param name="currentNode"></param>
         void rightRotiation(TreapNode currentNode)
         {
             if (currentNode.prev == root)
@@ -76,7 +85,13 @@ namespace AlgoDat_Praktikum
                 temp.prev = currentNode;
             }
         }
-        void heapRotation(TreapNode currentNode)
+        
+        /// <summary>
+        /// private function used to rotate nodes through a treap
+        /// calls on private functions leftRotation and rightRotation
+        /// </summary>
+        /// <param name="currentNode"> node in relation to which is rotated </param>
+        void rotation(TreapNode currentNode)
         {
             if(currentNode.prev == root && currentNode.prio < (root as TreapNode).prio)
             {
@@ -110,6 +125,13 @@ namespace AlgoDat_Praktikum
             }
         }
 
+        /// <summary>
+        /// public insert function for treap, sends integer element to correct position in treap
+        /// calls on private functions binInsert from BinSearchTree and rotation
+        /// </summary>
+        /// <param name="elem"> integer value, data of coresponding TreapNode </param>
+        /// <returns> returns boolean value, 
+        /// true = value was inserted into treap, false = value was already in treap </returns>
         public override bool insert(int elem)
         {
             if(root == null)
@@ -122,7 +144,7 @@ namespace AlgoDat_Praktikum
                 TreeNode newNode = new TreapNode(elem);
                 if (binInsert(ref newNode, elem))
                 {
-                    heapRotation(newNode as TreapNode);
+                    rotation(newNode as TreapNode);
                     return true;
                 }
                 return false;

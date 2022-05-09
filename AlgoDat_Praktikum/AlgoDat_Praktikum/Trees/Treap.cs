@@ -150,5 +150,10 @@ namespace AlgoDat_Praktikum
                 return false;
             }
         }
+
+        public override bool delete(int elem)
+        {
+            throw new Exception();
+        }
     }
 }

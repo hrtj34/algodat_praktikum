@@ -124,7 +124,7 @@ namespace AlgoDat_Praktikum
                 }
             }
         }
-
+        
         /// <summary>
         /// public insert function for treap, sends integer element to correct position in treap
         /// calls on private functions binInsert from BinSearchTree and rotation
@@ -154,6 +154,6 @@ namespace AlgoDat_Praktikum
         public override bool delete(int elem)
         {
             throw new Exception();
-        }
+        } 
     }
 }

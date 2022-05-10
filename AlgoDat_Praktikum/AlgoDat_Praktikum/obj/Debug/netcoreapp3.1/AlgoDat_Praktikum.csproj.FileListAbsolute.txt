@@ -1,0 +1,14 @@
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\obj\Debug\netcoreapp3.1\AlgoDat_Praktikum.csproj.AssemblyReference.cache
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\obj\Debug\netcoreapp3.1\AlgoDat_Praktikum.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\obj\Debug\netcoreapp3.1\AlgoDat_Praktikum.AssemblyInfoInputs.cache
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\obj\Debug\netcoreapp3.1\AlgoDat_Praktikum.AssemblyInfo.cs
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\obj\Debug\netcoreapp3.1\AlgoDat_Praktikum.csproj.CoreCompileInputs.cache
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\bin\Debug\netcoreapp3.1\AlgoDat_Praktikum.exe
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\bin\Debug\netcoreapp3.1\AlgoDat_Praktikum.deps.json
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\bin\Debug\netcoreapp3.1\AlgoDat_Praktikum.runtimeconfig.json
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\bin\Debug\netcoreapp3.1\AlgoDat_Praktikum.runtimeconfig.dev.json
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\bin\Debug\netcoreapp3.1\AlgoDat_Praktikum.dll
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\bin\Debug\netcoreapp3.1\AlgoDat_Praktikum.pdb
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\obj\Debug\netcoreapp3.1\AlgoDat_Praktikum.dll
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\obj\Debug\netcoreapp3.1\AlgoDat_Praktikum.pdb
+C:\Users\Dev\Source\Repos\algodat_praktikum\AlgoDat_Praktikum\AlgoDat_Praktikum\obj\Debug\netcoreapp3.1\AlgoDat_Praktikum.genruntimeconfig.cache

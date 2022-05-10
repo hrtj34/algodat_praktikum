@@ -15,18 +15,12 @@ namespace AlgoDat_Praktikum
             tabsize = Tabsize;
             if (QuadProbeable(tabsize))
             {
-                tab = Tab;
+                InsertTab(Tab, true);
             }
             else
             {
                 sondsize = MakeQuadProbeable(tabsize);
-                int[] tab = new int[sondsize];
-
-                for (int i = 0; i < tabsize; i++)
-                {
-                    tab[i] = Tab[i];
-                }
-                AddMinusToArray(Tabsize, sondsize, ref tab);
+                InsertTab(Tab, true);
             }
             if(HashFunctionUpdater(ref HashFunction, sondsize))
                 tabsize = sondsize;
@@ -47,6 +41,8 @@ namespace AlgoDat_Praktikum
                 tab = CreateMinusArray(sondsize);
 
             }
+            if (HashFunctionUpdater(ref HashFunction, sondsize))
+                tabsize = sondsize;
             hashFunction = HashFunction;
         }
 
@@ -105,12 +101,13 @@ namespace AlgoDat_Praktikum
             for (int i = 1; i < maxSondSteps; i++)
             {
                 int iSquare = i * i;
+                int index = (aux + iSquare) % sondsize;
 
-                if (MatchFinder(aux + iSquare, ref vacantMemoriser, elem, ref matchMemoriser))
+                if (MatchFinder(index, ref vacantMemoriser, elem, ref matchMemoriser))
                     return (matchMemoriser, vacantMemoriser);
                 
 
-                if (MatchFinder(aux - iSquare, ref vacantMemoriser, elem, ref matchMemoriser))
+                if (MatchFinder(index, ref vacantMemoriser, elem, ref matchMemoriser))
                     return (matchMemoriser, vacantMemoriser);
             }
             return (matchMemoriser, vacantMemoriser);
@@ -118,17 +115,22 @@ namespace AlgoDat_Praktikum
 
         public bool MatchFinder(int index, ref int vacantMemoriser, int elem, ref int matchMemoriser)
         {
-            
-            if (vacantMemoriser != -1 && tab[index] < 0)
-            {
-                vacantMemoriser = index;
-                if (tab[index] < -1) return true;
-            }
-            else if (tab[index] == elem) 
+            if(tab[index] == elem)
             {
                 matchMemoriser = index;
                 return true;
             }
+
+            if (vacantMemoriser == -1)
+            {
+                if (tab[index] < 0)
+                {
+                    vacantMemoriser = index;
+                    if (tab[index] < -1) return true;
+                }
+               
+            }
+            else if (tab[index] < -1) return true;
             return false;
         }
 
@@ -136,41 +138,40 @@ namespace AlgoDat_Praktikum
         private static int MakeQuadProbeable(int num)
         {
             int auxNum = num + 3 - num % 4;
-
-            while (!QuadProbeable(auxNum))
-            {
-                auxNum += 4;
-            }
-
-            return auxNum;
+            return PrimeMaker(auxNum, 4);
         }
 
-        private static bool PrimeCheck(int num)
+        
+
+        
+
+        
+
+        private void InsertTab(int[] Tab, bool clean = false)
         {
-            if (num <= 1) return false;
-            if (num == 2) return true;
-            if (num % 2 == 0) return false;
+            if (clean) tab = CreateMinusArray(sondsize);
 
-            for (int i = 3; i <= num / i; i += 2)
+            for (int i = 0; i < Tab.Length; i++)
             {
-                if (num % i == 0) return false;
-            }
-
-            return true;
-        }
-
-        private static void AddMinusToArray(int start, int stop, ref int[] array)
-        {
-            for (int i = start; i < stop; i++)
-            {
-                array[i] = -2;
+                insert(Tab[i]);
             }
         }
-        private static int[] CreateMinusArray(int length)
+
+        public override void InsertTab(int[] Tab)
         {
-            int[] array = new int[length];
-            AddMinusToArray(0, length, ref array);
-            return array;
+            for (int i = 0; i < Tab.Length; i++)
+            {
+                if(!insert(Tab[i])) throw new Exception();
+            }
+        }
+
+        public override void DeleteTab(int[] Tab)
+        {
+
+            for (int i = 0; i < Tab.Length; i++)
+            {
+                if (!delete(Tab[i])) throw new Exception();
+            }
         }
 
         private static bool HashFunctionUpdater(ref IHashFunction HashFunction, int size)
@@ -195,7 +196,12 @@ namespace AlgoDat_Praktikum
 
         public override void print()
         {
-            throw new NotImplementedException();
+            foreach (int key in tab)
+            {
+                Console.Write("| " + key);
+            }
+
+            
         }
 
         

@@ -103,19 +103,18 @@ namespace AlgoDat_Praktikum
     {
         protected class TreeNode : BaseNode
         {
-            public int key; 
             public TreeNode left = null, right = null, prev = null;
-            public TreeNode(int Key) { key = Key; }//: base(Key) {}
+            public TreeNode(int Key) : base(Key) {}
 
             /////////////////////////
             //// for debugging usage!
             /////////////////////////
-            //public override string ToString()
-            //{
-            //    string lString = (left == null) ? "null" : left.key.ToString();
-            //    string rString = (right == null) ? "null" : right.key.ToString();
-            //    return $"left:{lString} <- {key} -> right:{rString}";
-            //}
+            public override string ToString()
+            {
+                string lString = (left == null) ? "null" : left.key.ToString();
+                string rString = (right == null) ? "null" : right.key.ToString();
+                return $"left:{lString} <- {key} -> right:{rString}";
+            }
         }
         protected TreeNode root = null;
 
@@ -127,23 +126,28 @@ namespace AlgoDat_Praktikum
         /// <returns></returns>
         public bool delete(int elem)
         {
-            return DeleteNode(elem);
+            return deleteNode(elem);
         }
         /// <summary>
         /// Private delete function, used by public bool delete
         /// </summary>
         /// <param name="elem"></param>
         /// <returns></returns>
-        private bool DeleteNode(int elem)
+        private bool deleteNode(int elem)
         {
             TreeNode tempChild = null;
             TreeNode tempParent = null;
             TreeNode predNode = null;
-            TreeNode tempDelete = searchNode(elem);
+            TreeNode tempDelete = Search(elem);
             if (tempDelete != null)
             {
                 if ((tempDelete.left == null) && (tempDelete.right == null)) //Its a Leaf node
                 {
+                    if (tempDelete == root)
+                    {
+                        root = null;
+                        return true;
+                    }
                     tempParent = tempDelete.prev;
                     if (tempDelete == tempParent.left) //Justremove by making it null
                         tempParent.left = null;
@@ -153,19 +157,26 @@ namespace AlgoDat_Praktikum
                 else if ((tempDelete.left == null) || (tempDelete.right == null)) //It has either Left orRight child
                 {
                     tempChild = tempDelete.left == null ? tempDelete.right : tempDelete.left; //Get the child
-                    tempParent = tempDelete.prev; //Getthe parent
+                    if (tempDelete == root)
+                    {
+                        root = tempChild;
+                    }
+                    else
+                        tempParent = tempDelete.prev; //Getthe parent
+
                     if (tempDelete == tempParent.left) //Makeparent points to it's child so it will automatically deleted like Linked list
                         tempParent.left = tempChild;
                     else
                         tempParent.right = tempChild;
                 }
-                else if ((tempDelete.left != null) || (tempDelete.right != null)) //It has both Left andRight child
+                else if ((tempDelete.left != null) && (tempDelete.right != null)) //It has both Left andRight child
                 {
-                    predNode = GetPredecessor(tempDelete);  //Findit's predecessor
+                    predNode = GetPredecessor(tempDelete);  //Find its predecessor
+
                     if (predNode.left != null) // Predecessor node canhave no or left child. Do below two steps only if it has left child
                     {
                         tempChild = predNode.left;
-                        predNode.prev.right = tempChild; //Assignleft child of predecessor to it's Parent's right.
+                        predNode.prev.right = tempChild; //Assign left child of predecessor to it's Parent's right.
                     }
                     // delete tempDelete
                     tempDelete.key = predNode.key; // OPT might change to tempDelete = predNode
@@ -174,7 +185,6 @@ namespace AlgoDat_Praktikum
                         predNode.prev.left = null;
                     if (predNode.key == predNode.prev.right.key)
                         predNode.prev.right = null;
-                    predNode = null; //Remove predecessornode as it's no longer required.
                 }
                 return true;
 
@@ -237,8 +247,8 @@ namespace AlgoDat_Praktikum
         /// <returns></returns>
         public bool insert(int elem)
         {
-            TreeNode placeHolder = new TreeNode(0);
-            return insert(ref placeHolder, elem);
+            TreeNode placeHolder = new TreeNode(elem);
+            return binInsert(ref placeHolder, elem);
         }
 
         /// <summary>
@@ -248,7 +258,7 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="elem"></param>
         /// <returns></returns>
-        protected bool insert(ref TreeNode newItem, int elem) // check positions of return
+        protected bool binInsert(ref TreeNode newItem, int elem) // check positions of return
         {
             // newItem = new TreeNode(elem);
             if (root == null)
@@ -300,7 +310,7 @@ namespace AlgoDat_Praktikum
         /// <returns></returns>
         public bool search(int elem)
         {
-            if (searchNode(elem) != null)
+            if (Search(elem) != null)
                 return true;
             else
                 return false;
@@ -311,7 +321,7 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="elem"></param>
         /// <returns></returns>
-        private TreeNode searchNode(int elem)
+        private TreeNode Search(int elem)
         {
             TreeNode item = root;
             while (item != null)
@@ -325,50 +335,50 @@ namespace AlgoDat_Praktikum
         #endregion
 
         #region print functions + misc.
-        //public void print()
-        //{
-        //    print(root);
-        //}
-        //private void print(TreeNode item)
-        //{   // kleiner -- selbst -- größer
-        //    if (item != null)
-        //    {
-        //        Console.Write("( ");
-        //        if (item.left != null)
-        //            print(item.left);
-        //        // linke Elemente ausgeben
-        //        Console.Write("  " + item.key + "  ");
-        //        if (item.right != null)
-        //            print(item.right);
-        //        // rechte Elemente ausgeben
-        //        Console.Write(" )");
-        //    }
-        //}
+        public void print()
+        {
+            print(root);
+        }
+        private void print(TreeNode item)
+        {   // kleiner -- selbst -- größer
+            if (item != null)
+            {
+                Console.Write("( ");
+                if (item.left != null)
+                    print(item.left);
+                // linke Elemente ausgeben
+                Console.Write("  " + item.key + "  ");
+                if (item.right != null)
+                    print(item.right);
+                // rechte Elemente ausgeben
+                Console.Write(" )");
+            }
+        }
 
         // other stuff
         // ALTE binInsert und search
-        protected bool binInsert(ref TreeNode newNode, int elem)
-        {
-            TreeNode currentNode = root;
-            if (!search(ref currentNode, elem))
-            {
-                if (currentNode.key < elem)
-                {
-                    currentNode.right = newNode;
-                    newNode.prev = currentNode;
-                    currentNode = currentNode.right;
-                }
-                else
-                {
-                    currentNode.left = newNode;
-                    newNode.prev = currentNode;
-                    currentNode = currentNode.left;
-                }
-                return true;
-            }
-            else
-                return false;
-        }
+        //protected bool binInsert(ref TreeNode newNode, int elem)
+        //{
+        //    TreeNode currentNode = root;
+        //    if (!search(ref currentNode, elem))
+        //    {
+        //        if (currentNode.key < elem)
+        //        {
+        //            currentNode.right = newNode;
+        //            newNode.prev = currentNode;
+        //            currentNode = currentNode.right;
+        //        }
+        //        else
+        //        {
+        //            currentNode.left = newNode;
+        //            newNode.prev = currentNode;
+        //            currentNode = currentNode.left;
+        //        }
+        //        return true;
+        //    }
+        //    else
+        //        return false;
+        //}
 
         ////private Such-Funktion, die auch Einfüg bzw. Lösch-Position zurückgibt
         private bool search(ref TreeNode node, int elem)
@@ -403,26 +413,26 @@ namespace AlgoDat_Praktikum
         }
 
         // Horizontale Ausgabe eines Trees mit Einrückungen (Code aus Übung)
-        public void print()
-        {
-            PrintHorizontal(root, 0);
-        }
+        //public void print()
+        //{
+        //    PrintHorizontal(root, 0);
+        //}
 
-        string PrintHorizontal(TreeNode current, int n)
-        {
-            string res = "";
-            if (current != null)
-            {
+        //string PrintHorizontal(TreeNode current, int n)
+        //{
+        //    string res = "";
+        //    if (current != null)
+        //    {
 
-                res += PrintHorizontal(current.right, n + 1);
-                res += "\n";
-                for (int i = 0; i < n; i++)
-                    res += "\t";
-                res += $"--{current}";
-                res += PrintHorizontal(current.left, n + 1);
-            }
-            return res;
-        }
+        //        res += PrintHorizontal(current.right, n + 1);
+        //        res += "\n";
+        //        for (int i = 0; i < n; i++)
+        //            res += "\t";
+        //        res += $"--{current}";
+        //        res += PrintHorizontal(current.left, n + 1);
+        //    }
+        //    return res;
+        //}
 
         //public void PreOrderPrint()
         //{

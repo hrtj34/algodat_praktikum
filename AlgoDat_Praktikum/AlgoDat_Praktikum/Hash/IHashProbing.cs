@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AlgoDat_Praktikum
+namespace AlgoDat_Praktikum.Hash
 {
-    class HashTabSepChain : HashTab
+    internal interface IHashProbing
     {
     }
 }

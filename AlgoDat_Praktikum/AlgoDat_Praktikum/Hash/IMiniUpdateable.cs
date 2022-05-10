@@ -4,7 +4,8 @@ using System.Text;
 
 namespace AlgoDat_Praktikum
 {
-    class HashTabSepChain : HashTab
+    interface IMiniUpdateable
     {
+        void Update(int tabsize);
     }
 }

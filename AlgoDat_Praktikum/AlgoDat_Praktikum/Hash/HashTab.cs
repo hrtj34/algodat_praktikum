@@ -4,7 +4,9 @@ using System.Text;
 
 namespace AlgoDat_Praktikum
 {
-    class HashTabSepChain : HashTab
+    class HashTab
     {
+        IHashFunction hashFunction;
+        IDictionary[] hashNodes;
     }
 }

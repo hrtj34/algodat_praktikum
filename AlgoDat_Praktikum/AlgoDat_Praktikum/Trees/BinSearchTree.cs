@@ -105,7 +105,7 @@ namespace AlgoDat_Praktikum
         {
             public int key; 
             public TreeNode left = null, right = null, prev = null;
-            public TreeNode(int Key) { key = Key; }//: base(Key) {}
+            public TreeNode(int Key): base(Key) {}
 
             /////////////////////////
             //// for debugging usage!

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AlgoDat_Praktikum
 {
-    class MultiSetSortedArray : BaseArray
+    class MultiSetSortedArray : BaseArray, IMultiSetSorted
     {
         int pos = 0;
         public MultiSetSortedArray(int al):base(al){}

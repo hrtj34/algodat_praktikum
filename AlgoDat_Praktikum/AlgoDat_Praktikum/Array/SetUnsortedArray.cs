@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AlgoDat_Praktikum
 {
-    class SetUnsortedArray : MultiSetUnsortedArray
+    class SetUnsortedArray : MultiSetUnsortedArray, ISetUnsorted
     {
         public SetUnsortedArray(int al) : base(al) { }
 

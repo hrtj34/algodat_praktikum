@@ -16,10 +16,13 @@ namespace AlgoDat_Praktikum
                 prio = zufall.Next(100);
             }
 
+            public TreapNode(int elem, int prio) : base(elem)
+            {
+                this.prio = prio;
+            }
             public override string ToString() => $"({key}, {prio})";
         }
 
-        
         //Rotation Funktionen ebenfalls moeglicherweiser aus BinTree
         /// <summary>
         /// private function that rotates a node left
@@ -27,63 +30,50 @@ namespace AlgoDat_Praktikum
         /// <param name="currentNode"></param>
         void leftRotation(TreapNode currentNode)
         {
-            if(currentNode.prev == root)
+            TreeNode temp = currentNode.prev;
+            currentNode.prev.right = currentNode.left;
+            if (currentNode.left != null)
+                currentNode.left.prev = currentNode.prev;
+            currentNode.left = currentNode.prev;
+
+            if (currentNode.prev != root)
             {
-                currentNode.prev.right = currentNode.left;
-                if (currentNode.left != null)
-                    currentNode.left = currentNode.prev;
-                TreeNode temp = currentNode.prev;   //evt. falscher Typ
-                currentNode.prev = currentNode.prev.prev;
-                temp.prev = currentNode;
-                root = currentNode;
-            }
-            else
-            {
-                currentNode.prev.right = currentNode.left;
-                if (currentNode.left != null)
-                    currentNode.left.prev = currentNode.prev;
-                currentNode.left = currentNode.prev;
-                if(currentNode.prev == currentNode.prev.prev.left)
+                if (currentNode.prev == currentNode.prev.prev.left)
                     currentNode.prev.prev.left = currentNode;
                 else
                     currentNode.prev.prev.right = currentNode;
-                TreeNode temp = currentNode.prev;   //evt. falscher Typ
-                currentNode.prev = currentNode.prev.prev;
-                temp.prev = currentNode;
             }
+            else
+                root = currentNode;
+
+            currentNode.prev = currentNode.prev.prev;
+            temp.prev = currentNode;
         }
-        
+
         /// <summary>
         /// private function that rotates a node right
         /// </summary>
         /// <param name="currentNode"></param>
-        void rightRotiation(TreapNode currentNode)
+        void rightRotation(TreapNode currentNode)
         {
-            if (currentNode.prev == root)
+            TreeNode temp = currentNode.prev;
+            currentNode.prev.left = currentNode.right;
+            if (currentNode.right != null)
+                currentNode.right.prev = currentNode.prev;
+            currentNode.right = currentNode.prev;
+
+            if (currentNode.prev != root)
             {
-                currentNode.prev.left = currentNode.right;
-                if (currentNode.right != null)
-                    currentNode.right.prev = currentNode.prev;
-                currentNode.right = currentNode.prev;
-                TreeNode temp = currentNode.prev;   //evt. falscher Typ
-                currentNode.prev = currentNode.prev.prev;
-                temp.prev = currentNode;
-                root = currentNode;
-            }
-            else
-            {
-                currentNode.prev.left = currentNode.right;
-                if(currentNode.right != null)
-                    currentNode.right.prev = currentNode.prev;
-                currentNode.right = currentNode.prev;
                 if (currentNode.prev.prev.right == currentNode.prev)
                     currentNode.prev.prev.right = currentNode;
                 else
                     currentNode.prev.prev.left = currentNode;
-                TreeNode temp = currentNode.prev;   //evt. falscher Typ
-                currentNode.prev = currentNode.prev.prev;
-                temp.prev = currentNode;
             }
+            else
+                root = currentNode;
+
+            currentNode.prev = currentNode.prev.prev;
+            temp.prev = currentNode;
         }
         
         /// <summary>
@@ -93,35 +83,12 @@ namespace AlgoDat_Praktikum
         /// <param name="currentNode"> node in relation to which is rotated </param>
         void rotation(TreapNode currentNode)
         {
-            if(currentNode.prev == root && currentNode.prio < (root as TreapNode).prio)
+            while (currentNode != root && (currentNode.prev as TreapNode).prio > currentNode.prio)
             {
-                TreeNode temp = root;
-                if(root.right == currentNode)
-                {
-                    root = currentNode;
-                    root.left = temp;
-                    root.prev = null;
-                    temp.prev = root;
-                    temp.right = null;
-                }
+                if (currentNode.prev.right == currentNode)
+                    leftRotation(currentNode);
                 else
-                {
-                    root = currentNode;
-                    root.right = temp;
-                    root.prev = null;
-                    temp.prev = root;
-                    temp.left = null;
-                }
-            }
-            else
-            {
-                while((currentNode.prev as TreapNode).prio > currentNode.prio)
-                {
-                    if (currentNode.prev.right == currentNode)
-                        leftRotation(currentNode);
-                    else
-                        rightRotiation(currentNode);
-                }
+                    rightRotation(currentNode);
             }
         }
         
@@ -151,9 +118,49 @@ namespace AlgoDat_Praktikum
             }
         }
 
+        /// <summary>
+        /// Deletes Node of given key from Treap
+        /// </summary>
+        /// <param name="elem">key of element</param>
+        /// <returns>Return if deletion took place/ if key was in treap at all</returns>
         public override bool delete(int elem)
         {
-            throw new Exception();
-        } 
+            if (root == null)
+                return false;
+
+            TreapNode delNode = SearchNode(elem) as TreapNode;
+
+            if (delNode != null)
+            {
+                //rotates delNode down the treap until it becomes a leaf
+                while (!(delNode.left == null && delNode.right == null))
+                {
+                    if (delNode.left != null && delNode.right != null)
+                    {
+                        if ((delNode.left as TreapNode).prio < (delNode.right as TreapNode).prio)
+                            rightRotation(delNode.left as TreapNode);
+                        else
+                            leftRotation(delNode.right as TreapNode);
+                    }
+                    else if (delNode.left != null)
+                        rightRotation(delNode.left as TreapNode);
+                    else if (delNode.right != null)
+                        leftRotation(delNode.right as TreapNode);
+                }
+
+                //disconnects delNode from the rest of the treap
+                if (delNode.prev.right == delNode)
+                    delNode.prev.right = null;
+                else
+                    delNode.prev.left = null;
+                delNode.prev = null;
+
+                return true;
+            }
+            else
+                return false;
+
+        }
+
     }
 }

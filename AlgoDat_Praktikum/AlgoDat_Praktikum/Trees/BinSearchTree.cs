@@ -124,7 +124,7 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="elem"></param>
         /// <returns></returns>
-        public bool delete(int elem)
+        public virtual bool delete(int elem)
         {
             return deleteNode(elem);
         }
@@ -138,7 +138,7 @@ namespace AlgoDat_Praktikum
             TreeNode tempChild = null;
             TreeNode tempParent = null;
             TreeNode predNode = null;
-            TreeNode tempDelete = Search(elem);
+            TreeNode tempDelete = SearchNode(elem);
             if (tempDelete != null)
             {
                 if ((tempDelete.left == null) && (tempDelete.right == null)) //Its a Leaf node
@@ -245,7 +245,7 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="elem"></param>
         /// <returns></returns>
-        public bool insert(int elem)
+        public virtual bool insert(int elem)
         {
             TreeNode placeHolder = new TreeNode(elem);
             return binInsert(ref placeHolder, elem);
@@ -310,7 +310,7 @@ namespace AlgoDat_Praktikum
         /// <returns></returns>
         public bool search(int elem)
         {
-            if (Search(elem) != null)
+            if (SearchNode(elem) != null)
                 return true;
             else
                 return false;
@@ -321,7 +321,7 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="elem"></param>
         /// <returns></returns>
-        private TreeNode Search(int elem)
+        protected TreeNode SearchNode(int elem)
         {
             TreeNode item = root;
             while (item != null)
@@ -413,26 +413,25 @@ namespace AlgoDat_Praktikum
         }
 
         // Horizontale Ausgabe eines Trees mit Einrückungen (Code aus Übung)
-        //public void print()
-        //{
-        //    PrintHorizontal(root, 0);
-        //}
+        public void printHorizontal()
+        {
+            Console.WriteLine(PrintHorizontal(root,0));
+        }
+        string PrintHorizontal(TreeNode current, int n)
+        {
+            string res = "";
+            if (current != null)
+            {
 
-        //string PrintHorizontal(TreeNode current, int n)
-        //{
-        //    string res = "";
-        //    if (current != null)
-        //    {
-
-        //        res += PrintHorizontal(current.right, n + 1);
-        //        res += "\n";
-        //        for (int i = 0; i < n; i++)
-        //            res += "\t";
-        //        res += $"--{current}";
-        //        res += PrintHorizontal(current.left, n + 1);
-        //    }
-        //    return res;
-        //}
+                res += PrintHorizontal(current.right, n + 1);
+                res += "\n";
+                for (int i = 0; i < n; i++)
+                    res += "\t";
+                res += $"--{current}";
+                res += PrintHorizontal(current.left, n + 1);
+            }
+            return res;
+        }
 
         //public void PreOrderPrint()
         //{

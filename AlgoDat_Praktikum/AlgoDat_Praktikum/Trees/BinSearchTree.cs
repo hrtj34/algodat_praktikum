@@ -268,9 +268,8 @@ namespace AlgoDat_Praktikum
             }
             else
             {
-                bool done = false;
                 TreeNode item = root;
-                do
+                while (elem != item.key)
                 {
                     if (elem < item.key) // linker Teilbaum
                     {
@@ -296,7 +295,7 @@ namespace AlgoDat_Praktikum
                         else
                             item = item.right;
                     }
-                } while (!done);
+                }
                 return false;
             }
         }

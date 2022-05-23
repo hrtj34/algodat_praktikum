@@ -6,24 +6,32 @@ namespace AlgoDat_Praktikum
 {
     class HashTabSepChain<Dictionary> : HashTabProt where Dictionary : IDictionary
     {
-        const int TABSIZE = 50;
         Dictionary[] tab;
 
-        public HashTabSepChain(int[] Tab, IHashFunction HashFunction)
+        public HashTabSepChain(int Tabsize, int[] Tab, IHashFunction HashFunction)
         {
-            tabsize = Tab.Length;
-            InsertTab(Tab, true);
+            tabsize = Tabsize;
             hashFunction = HashFunction;
+
+            if (tabsize < Tab.Length)
+                tabsize = Tab.Length;
+
+            HashFunctionUpdater(ref hashFunction, tabsize);
+
+            InsertTab(Tab, true);
+            
         }
 
         public HashTabSepChain(int Tabsize, IHashFunction HashFunction)
         {
             tabsize = Tabsize;
             hashFunction = HashFunction;
+
+            HashFunctionUpdater(ref hashFunction, tabsize);
         }
 
         public HashTabSepChain() : this(TABSIZE, new HashDiv(TABSIZE)) { }
-        public HashTabSepChain(int[] Tab) : this(Tab, new HashDiv(TABSIZE)) { }
+        public HashTabSepChain(int[] Tab) : this(TABSIZE, Tab, new HashDiv(TABSIZE)) { }
 
         public override bool delete(int elem)
         {
@@ -37,9 +45,16 @@ namespace AlgoDat_Praktikum
             return tab[aux].insert(elem);
         }
 
+        /// <summary>
+        /// Prints all keys in the hash table.
+        /// </summary>
         public override void print()
         {
-            throw new NotImplementedException();
+            foreach (Dictionary key in tab)
+            {
+                Console.Write("-----------");
+                key.print();
+            }
         }
 
         public override bool search(int elem)
@@ -48,33 +63,16 @@ namespace AlgoDat_Praktikum
             return tab[aux].search(elem);
         }
 
-        private void InsertTab(int[] Tab, bool clean = false)
+        private void InsertTab(int[] Tab, bool clean)
         {
             if (clean) tab = CreateNullArray<Dictionary>(tabsize);
 
-            for (int i = 0; i < Tab.Length; i++)
-            {
-                insert(Tab[i]);
-            }
+            InsertTab(Tab);
         }
 
-        public override void InsertTab(int[] Tab)
-        {
+       
 
-            for (int i = 0; i < Tab.Length; i++)
-            {
-                insert(Tab[i]);
-            }
-        }
-
-        public override void DeleteTab(int[] Tab)
-        {
-
-            for (int i = 0; i < Tab.Length; i++)
-            {
-                if (!delete(Tab[i])) throw new Exception();
-            }
-        }
+        
 
         /* private void InsertTab(Dictionary[] Tab, bool clean = false)
         {

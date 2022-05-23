@@ -8,8 +8,8 @@ namespace AlgoDat_Praktikum
     {
         const uint C = 3586947843;
         uint c;
-        int wordsize;
-        int tabsize;
+        int wordsize2Pow;
+        int tabsize2Pow;
 
         /// <summary>
         /// Constructs an Object capable of generating Hashkeys with the multiplication method.
@@ -18,9 +18,9 @@ namespace AlgoDat_Praktikum
         /// <param name="Tabsize">Size of table as powers of two</param>
         public HashMult(int Wordsize, int Tabsize)
         {
-            wordsize = Wordsize;
-            tabsize = Tabsize;
-            c = C >> 32 - wordsize;
+            wordsize2Pow = (int)Math.Ceiling(Math.Log2(Wordsize));
+            tabsize2Pow = (int)Math.Ceiling(Math.Log2(Tabsize));
+            c = C >> 32 - wordsize2Pow;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace AlgoDat_Praktikum
         public int HashFunction(int Key)
         {
             uint aux = (uint)((Key * c) % (long)Math.Pow(2,32));
-            aux = aux >> 32 - tabsize;
+            aux = aux >> 32 - tabsize2Pow;
             return (int)aux;
         }
     }

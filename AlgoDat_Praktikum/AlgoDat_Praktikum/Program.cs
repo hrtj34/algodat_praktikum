@@ -44,8 +44,8 @@ namespace AlgoDat_Praktikum
 
             Console.WriteLine("Welcome to our programm! It lets you store your data in all our sorts of different structures.");
             Console.WriteLine("You can choose from the following:\n");
-            Console.WriteLine("1. Array");
-            Console.WriteLine("2. List");
+            Console.WriteLine("1 Array");
+            Console.WriteLine("2 List");
             Console.WriteLine("3 Hash Table");
             Console.WriteLine("4 Binary Search Tree");
             Console.WriteLine("5 AVL - Tree");
@@ -60,31 +60,38 @@ namespace AlgoDat_Praktikum
                 {
                     do
                     {
-                        Console.Write("Your Choice: ");
+                        Console.Write("Please enter the number of your choice: ");
                         res = Console.ReadLine();
                         switch (res)
                         {
                             case "1":
                                 bool[] ans = checkQuestions();
-                                //if (ans[0])
-                                //{
-                                //    if (ans[1])
-                                //        structure = new MultiSetUnsortedArray();
-                                //          Console.WriteLine("You chose an unsorted array multi set.");
-                                //    else
-                                //        structure = new MultiSetSortedArray();
-                                //          Console.WriteLine("You chose a sorted array multi set.");
-                                //}
-                                //else
-                                //{
-                                //    if (ans[1])
-                                //        structure = new SetUnsortedArray();
-                                //Console.WriteLine("You chose an unsorted array set.");
-                                //    else
-
-                                //        structure = new SetSortedArray();
-                                //Console.WriteLine("You chose an sorted array set.");
-                                //}
+                                if (ans[0])
+                                {
+                                    if (ans[1])
+                                    {
+                                        structure = new MultiSetUnsortedArray(50);
+                                        Console.WriteLine("You chose an unsorted array multi set.");
+                                    }
+                                    else
+                                    {
+                                        structure = new MultiSetSortedArray(50);
+                                        Console.WriteLine("You chose a sorted array multi set.");
+                                    }
+                                }
+                                else
+                                {
+                                    if (ans[1])
+                                    {
+                                        structure = new SetUnsortedArray(50);
+                                        Console.WriteLine("You chose an unsorted array set.");
+                                    }
+                                    else
+                                    {
+                                        structure = new SetSortedArray(50);
+                                        Console.WriteLine("You chose an sorted array set.");
+                                    }
+                                }
                                 break;
                             case "2":
                                 ans = checkQuestions();
@@ -218,7 +225,7 @@ namespace AlgoDat_Praktikum
                                 data = Convert.ToInt32(Console.ReadLine());
                                 if (!structure.delete(data))
                                 {
-                                    Console.WriteLine("The key was not found and therefore could not be deleted ´.");
+                                    Console.WriteLine("The key was not found and therefore could not be deleted.");
                                 }
                                 break;
                             case "search":
@@ -226,6 +233,7 @@ namespace AlgoDat_Praktikum
                                 data = Convert.ToInt32(Console.ReadLine());
                                 if (!structure.search(data))
                                 {
+                                    structure.insert(data);
                                     Console.WriteLine("This key was not yet part of your data structure. It was inserted into it now.");
                                 }
                                 break;

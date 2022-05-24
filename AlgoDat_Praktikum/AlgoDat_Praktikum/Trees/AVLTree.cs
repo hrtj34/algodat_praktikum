@@ -170,7 +170,7 @@ namespace AlgoDat_Praktikum
 
 
 
-        // Addbalancing probably can (and at some point should) be turned into one programm
+        // Addbalancing and Delbalancing probably can (and at some point should) be turned into one programm
         /// <summary>
         /// Addbalancing recalculates hR, hL and balance values after the inserting of a new,
         /// and initialises, if necessary, FixBalance, for rebalancing.

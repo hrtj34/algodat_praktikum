@@ -379,8 +379,8 @@ namespace AlgoDat_Praktikum
         //        return false;
         //}
 
-        ////private Such-Funktion, die auch Einfüg bzw. Lösch-Position zurückgibt
-        private bool search(ref TreeNode node, int elem)
+        ////protected Such-Funktion, die auch Einfüg bzw. Lösch-Position zurückgibt
+        protected bool search(ref TreeNode node, int elem)
         {
             int count = 0;
             while (true)

@@ -10,7 +10,7 @@ namespace AlgoDat_Praktikum
             Console.WriteLine("Do you want to be able to store the same element more than once? (y/n)?");
             ans[0] = Console.ReadLine() == "y";
             Console.WriteLine("Do you want your data to be sorted? (y/n)");
-            ans[1] = Console.ReadLine() == "y";
+            ans[1] = Console.ReadLine() == "n";
             return ans;
         } 
         static void Main(string[] args)
@@ -135,7 +135,7 @@ namespace AlgoDat_Praktikum
                                     }
                                     else
                                     {
-                                        //I don't know which hash type this is
+                                        structure = new HashTabQuadProb(10, new HashMult(50,10));
                                     }
                                 }
                                 else
@@ -196,8 +196,8 @@ namespace AlgoDat_Praktikum
             while (true)
             //keeps trying until no error has occured
             {
-                //try
-                //{
+                try
+                {
 
                     do
                     {
@@ -248,11 +248,11 @@ namespace AlgoDat_Praktikum
                         Console.WriteLine();
                     } while (proceed);
                     break;
-                //}
-                /* catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     Console.WriteLine("That didn't work. It seems an unforeseen error has occured. Please try again." + ex.Message); ;
-                } */
+                }
             }
 
             Console.WriteLine("Thank you for using our programm!");

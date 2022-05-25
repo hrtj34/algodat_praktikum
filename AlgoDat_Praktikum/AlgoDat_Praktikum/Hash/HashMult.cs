@@ -18,8 +18,8 @@ namespace AlgoDat_Praktikum
         /// <param name="Tabsize">Size of table as powers of two</param>
         public HashMult(int Wordsize, int Tabsize)
         {
-            wordsize2Pow = (int)Math.Ceiling(Math.Log2(Wordsize));
-            tabsize2Pow = (int)Math.Ceiling(Math.Log2(Tabsize));
+            wordsize2Pow = (int)Math.Floor(Math.Log2(Wordsize));
+            tabsize2Pow = (int)Math.Floor(Math.Log2(Tabsize));
             c = C >> 32 - wordsize2Pow;
         }
 

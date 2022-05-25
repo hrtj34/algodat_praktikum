@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AlgoDat_Praktikum
 {
-    class HashTabSepChain<Dictionary> : HashTabProt where Dictionary : IDictionary
+    class HashTabSepChain<Dictionary> : HashTabProt where Dictionary : IDictionary, new()
     {
         Dictionary[] tab;
 
@@ -19,7 +19,11 @@ namespace AlgoDat_Praktikum
             HashFunctionUpdater(ref hashFunction, tabsize);
 
             InsertTab(Tab, true);
-            
+
+            foreach (Dictionary item in tab)
+            {
+
+            }
         }
 
         public HashTabSepChain(int Tabsize, IHashFunction HashFunction)
@@ -29,7 +33,7 @@ namespace AlgoDat_Praktikum
 
             HashFunctionUpdater(ref hashFunction, tabsize);
 
-            tab = CreateNullArray<Dictionary>(tabsize);
+            tab = CreateInitialisedArray<Dictionary>(tabsize);
         }
 
         public HashTabSepChain() : this(TABSIZE, new HashDiv(TABSIZE)) { }
@@ -67,7 +71,7 @@ namespace AlgoDat_Praktikum
 
         private void InsertTab(int[] Tab, bool clean)
         {
-            if (clean) tab = CreateNullArray<Dictionary>(tabsize);
+            if (clean) tab = CreateInitialisedArray<Dictionary>(tabsize);
 
             InsertTab(Tab);
         }

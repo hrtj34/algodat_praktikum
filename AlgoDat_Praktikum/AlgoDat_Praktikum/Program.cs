@@ -66,16 +66,18 @@ namespace AlgoDat_Praktikum
                         {
                             case "1":
                                 bool[] ans = checkQuestions();
+                                Console.WriteLine("How long do you want your array to be? ");
+                                int length = Convert.ToInt32(Console.ReadLine());
                                 if (ans[0])
                                 {
                                     if (ans[1])
                                     {
-                                        structure = new MultiSetUnsortedArray(50);
+                                        structure = new MultiSetUnsortedArray(length);
                                         Console.WriteLine("You chose an unsorted array multi set.");
                                     }
                                     else
                                     {
-                                        structure = new MultiSetSortedArray(50);
+                                        structure = new MultiSetSortedArray(length);
                                         Console.WriteLine("You chose a sorted array multi set.");
                                     }
                                 }
@@ -83,12 +85,12 @@ namespace AlgoDat_Praktikum
                                 {
                                     if (ans[1])
                                     {
-                                        structure = new SetUnsortedArray(50);
+                                        structure = new SetUnsortedArray(length);
                                         Console.WriteLine("You chose an unsorted array set.");
                                     }
                                     else
                                     {
-                                        structure = new SetSortedArray(50);
+                                        structure = new SetSortedArray(length);
                                         Console.WriteLine("You chose an sorted array set.");
                                     }
                                 }
@@ -204,11 +206,6 @@ namespace AlgoDat_Praktikum
                         Console.WriteLine("To exit the programm, please enter exit.");
                         Console.Write("\nPlease enter a command: ");
                         command = Console.ReadLine().ToLower();
-                        Console.Clear();
-
-                        Console.WriteLine("Your previous structure:\n");
-                        structure.print();
-                        Console.WriteLine($"\n\nPlease enter a command: {command}");
 
                         switch (command)
                         {
@@ -245,6 +242,7 @@ namespace AlgoDat_Praktikum
                                 break;
                         }
 
+                        Console.Clear();
                         Console.WriteLine("\nYour current structure:\n");
                         structure.print();
                         Console.WriteLine();

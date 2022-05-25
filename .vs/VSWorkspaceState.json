@@ -2,7 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\AlgoDat_Praktikum",
-    "\\AlgoDat_Praktikum\\AlgoDat_Praktikum"
+    "\\AlgoDat_Praktikum\\AlgoDat_Praktikum",
+    "\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\Array",
+    "\\AlgoDat_Praktikum\\AlgoDat_Praktikum\\Hash"
   ],
   "SelectedNode": "\\AlgoDat_Praktikum\\AlgoDat_Praktikum.sln",
   "PreviewInSolutionExplorer": false

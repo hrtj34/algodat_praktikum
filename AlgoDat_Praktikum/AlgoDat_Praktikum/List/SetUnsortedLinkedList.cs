@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AlgoDat_Praktikum
 {
-    class SetUnsortedLinkedList : ISetUnsorted
+    class SetUnsortedLinkedList : BaseList, ISetUnsorted
     {
         public bool delete(int elem)
         {

@@ -6,7 +6,7 @@ namespace AlgoDat_Praktikum
 {
     class HashTabQuadProb : HashTabProt
     {
-        const int TABSIZE = 50;
+        
         private int sondsize;
         private int[] tab;
 
@@ -19,6 +19,14 @@ namespace AlgoDat_Praktikum
         public HashTabQuadProb(int Tabsize, int[] Tab, IHashFunction HashFunction)
         {
             tabsize = Tabsize;
+            hashFunction = HashFunction;
+
+            if (tabsize < Tab.Length)
+                tabsize = Tab.Length;
+
+            HashFunctionUpdater(ref hashFunction, tabsize);
+            sondsize = tabsize;
+
             if (QuadProbeable(tabsize))
             {
                 InsertTab(Tab, true);
@@ -26,11 +34,11 @@ namespace AlgoDat_Praktikum
             else
             {
                 sondsize = MakeQuadProbeable(tabsize);
+                if (HashFunctionUpdater(ref hashFunction, sondsize))
+                    tabsize = sondsize;
                 InsertTab(Tab, true);
             }
-            if (HashFunctionUpdater(ref HashFunction, sondsize))
-                tabsize = sondsize;
-            hashFunction = HashFunction;
+            
         }
 
         /// <summary>
@@ -41,20 +49,22 @@ namespace AlgoDat_Praktikum
         public HashTabQuadProb(int Tabsize, IHashFunction HashFunction)
         {
             tabsize = Tabsize;
+            hashFunction = HashFunction;
+            sondsize = tabsize;
+
             if (QuadProbeable(tabsize))
             {
-                tab = CreateMinusArray(tabsize);
-                sondsize = tabsize;
+                tab = CreateMinusArray(tabsize);               
             }
             else
             {
                 sondsize = MakeQuadProbeable(tabsize);
+                if (HashFunctionUpdater(ref hashFunction, sondsize))
+                    tabsize = sondsize;
                 tab = CreateMinusArray(sondsize);
 
             }
-            if (HashFunctionUpdater(ref HashFunction, sondsize))
-                tabsize = sondsize;
-            hashFunction = HashFunction;
+            
         }
 
         /// <summary>
@@ -128,77 +138,52 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="elem">Key of the element being looked for.</param>
         /// <returns>First int returns the index of the element if it was found, otherwise -1. Second int returns index of first vacant slot if one was found before stopping, otherwise -1.</returns>
-        public (int, int) QuadProbing(int elem)
+        private (int, int) QuadProbing(int elem)
         {
+            int index;
             int aux = hashFunction.HashFunction(elem);
             int vacantMemoriser = -1;
             int matchMemoriser = -1;
 
-            /* When the MatchFinder is true either the element or a slot that was never occupied has been found. The element cannot be beyond this spot 
+            /* When the MatchFinder is true either the element, or a slot that was never occupied, has been found. The element cannot be beyond this spot 
              * as it would either already be in the table and thus not be inserted again (as only sets are accepted) or the element would have been in
              * the vacant slot as that would have been the next vacant slot in any case as it was never occupied.
              */
-            if (MatchFinder(aux, ref vacantMemoriser, elem, ref matchMemoriser))
+            if (MatchFinder(tab, aux, ref vacantMemoriser, elem, ref matchMemoriser))
                 return (matchMemoriser, vacantMemoriser);
 
             int maxSondSteps = (tab.Length - 1) / 2;
             for (int i = 1; i < maxSondSteps; i++)
             {
                 int iSquare = i * i;
-                int index = (aux + iSquare) % sondsize;
+                index = (aux + iSquare) % sondsize;
 
-                if (MatchFinder(index, ref vacantMemoriser, elem, ref matchMemoriser))
+                if (MatchFinder(tab, index, ref vacantMemoriser, elem, ref matchMemoriser))
                     return (matchMemoriser, vacantMemoriser);
 
+                index = (aux - iSquare) % sondsize;
 
-                if (MatchFinder(index, ref vacantMemoriser, elem, ref matchMemoriser))
+                if (MatchFinder(tab, index, ref vacantMemoriser, elem, ref matchMemoriser))
                     return (matchMemoriser, vacantMemoriser);
             }
             return (matchMemoriser, vacantMemoriser);
         }
 
-        /// <summary>
-        /// Checks for a given index, if the element occupies the slot or if the slot is vacant. If no vacant slot has been found before, and the slot is vacant, it is memorised.
-        /// </summary>
-        /// <param name="index">Index of the hash table being looked at</param>
-        /// <param name="vacantMemoriser">Memorises the first vacant slot found</param>
-        /// <param name="elem">Key of the element being looked for</param>
-        /// <param name="matchMemoriser">Memorises the slot where the element was found</param>
-        /// <returns>True, if a match has been found. True, if a vacant slot that was never occupied has been found. False otherwise.</returns>
-        public bool MatchFinder(int index, ref int vacantMemoriser, int elem, ref int matchMemoriser)
-        {
-            if (tab[index] == elem)
-            {
-                matchMemoriser = index;
-                return true;
-            }
-
-            if (vacantMemoriser == -1)
-            {
-                if (tab[index] < 0)
-                {
-                    vacantMemoriser = index;
-                    if (tab[index] < -1) return true;       //-2 stands for never occupied, -1 stands for empty but once occupied
-                }
-
-            }
-            else if (tab[index] < -1) return true;
-            return false;
-        }
+        
 
         /// <summary>
         /// Checks if a tablesize/ number is suitable for quadratic probeing.
         /// </summary>
         /// <param name="num">Number to be checked</param>
         /// <returns>True if it is suitable, false if it is not.</returns>
-        private static bool QuadProbeable(int num) => num % 4 == 3 && PrimeCheck(num);
+        public static bool QuadProbeable(int num) => num % 4 == 3 && PrimeCheck(num);
 
         /// <summary>
         /// Finds the next bigger tablesize/ number that is suitable for quadratic probeing.
         /// </summary>
         /// <param name="num">Number to be adjusted</param>
         /// <returns>A larger number that is suitable for quadratic probeing.</returns>
-        private static int MakeQuadProbeable(int num)
+        public static int MakeQuadProbeable(int num)
         {
             int auxNum = num + 3 - num % 4;
             return PrimeMaker(auxNum, 4);
@@ -210,63 +195,18 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="Tab">Table whose values shall be inserted.</param>
         /// <param name="clean">Optional argument to wipe the hash table beforehand.</param>
-        private void InsertTab(int[] Tab, bool clean = false)
+        private void InsertTab(int[] Tab, bool clean)
         {
             if (clean) tab = CreateMinusArray(sondsize);
 
-            for (int i = 0; i < Tab.Length; i++)
-            {
-                insert(Tab[i]);
-            }
+            InsertTab(Tab);
         }
 
-        /// <summary>
-        /// Inserts all values from a table into the hash table.
-        /// </summary>
-        /// <param name="Tab">Table whose values shall be inserted.</param>
-        /// <exception cref="Exception"></exception>
-        public override void InsertTab(int[] Tab)
-        {
-            for (int i = 0; i < Tab.Length; i++)
-            {
-                if (!insert(Tab[i])) throw new Exception();
-            }
-        }
+        
 
-        /// <summary>
-        /// Deletes all values from a table from the hash table.
-        /// </summary>
-        /// <param name="Tab">Table whose values shall be deleted.</param>
-        /// <exception cref="Exception"></exception>
-        public override void DeleteTab(int[] Tab)
-        {
+        
 
-            for (int i = 0; i < Tab.Length; i++)
-            {
-                if (!delete(Tab[i])) throw new Exception();
-            }
-        }
-
-        /// <summary>
-        /// Updates the tablesize of the HashFunction if it takes updates.
-        /// </summary>
-        /// <param name="HashFunction">HashFunction object to be updated.</param>
-        /// <param name="size">Tablesize to update to.</param>
-        /// <returns>True if the function could be updated, false if not.</returns>
-        private static bool HashFunctionUpdater(ref IHashFunction HashFunction, int size)
-        {
-            if (HashFunction == null)
-            {
-                HashFunction = new HashDiv(size);
-                return true;
-            }
-            if (HashFunction is IMiniUpdateable)
-            {
-                (HashFunction as IMiniUpdateable).Update(size);
-                return true;
-            }
-            return false;
-        }
+        
 
         /// <summary>
         /// Prints all keys in the hash table.

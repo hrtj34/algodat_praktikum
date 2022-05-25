@@ -89,7 +89,7 @@ namespace AlgoDat_Praktikum
             int elemSlot;
             int vacantSlot;
             (elemSlot, vacantSlot) = QuadProbing(elem);
-
+            Console.WriteLine(elemSlot + " M " + vacantSlot);
             if (elemSlot == -1 && vacantSlot != -1)
             {
                 tab[vacantSlot] = elem;
@@ -153,15 +153,19 @@ namespace AlgoDat_Praktikum
                 return (matchMemoriser, vacantMemoriser);
 
             int maxSondSteps = (tab.Length - 1) / 2;
-            for (int i = 1; i < maxSondSteps; i++)
+            for (int i = 1; i <= maxSondSteps; i++)
             {
                 int iSquare = i * i;
                 index = (aux + iSquare) % sondsize;
+                if(index < 0)
+                    index += sondsize;
 
                 if (MatchFinder(tab, index, ref vacantMemoriser, elem, ref matchMemoriser))
                     return (matchMemoriser, vacantMemoriser);
 
                 index = (aux - iSquare) % sondsize;
+                if (index < 0)
+                    index += sondsize;
 
                 if (MatchFinder(tab, index, ref vacantMemoriser, elem, ref matchMemoriser))
                     return (matchMemoriser, vacantMemoriser);

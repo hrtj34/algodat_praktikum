@@ -28,6 +28,8 @@ namespace AlgoDat_Praktikum
             hashFunction = HashFunction;
 
             HashFunctionUpdater(ref hashFunction, tabsize);
+
+            tab = CreateNullArray<Dictionary>(tabsize);
         }
 
         public HashTabSepChain() : this(TABSIZE, new HashDiv(TABSIZE)) { }

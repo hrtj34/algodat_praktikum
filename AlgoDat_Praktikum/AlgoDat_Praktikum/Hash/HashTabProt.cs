@@ -6,7 +6,7 @@ namespace AlgoDat_Praktikum
 {
     abstract class HashTabProt : HashToolbox, ISetUnsorted
     {
-        protected const int TABSIZE = 50;
+        protected const int TABSIZE = 10;
         protected int tabsize;
         protected IHashFunction hashFunction;
 

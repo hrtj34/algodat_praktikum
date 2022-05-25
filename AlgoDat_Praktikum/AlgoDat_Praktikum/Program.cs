@@ -187,8 +187,8 @@ namespace AlgoDat_Praktikum
             while (true)
             //keeps trying until no error has occured
             {
-                try
-                {
+                //try
+                //{
 
                     do
                     {
@@ -242,11 +242,11 @@ namespace AlgoDat_Praktikum
                         Console.WriteLine();
                     } while (proceed);
                     break;
-                }
-                catch
+                //}
+                /* catch (Exception ex)
                 {
-                    Console.WriteLine("That didn't work. It seems an unforeseen error has occured. Please try again."); ;
-                }
+                    Console.WriteLine("That didn't work. It seems an unforeseen error has occured. Please try again." + ex.Message); ;
+                } */
             }
 
             Console.WriteLine("Thank you for using our programm!");

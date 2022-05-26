@@ -6,24 +6,35 @@ namespace AlgoDat_Praktikum
 {
     class SetUnsortedLinkedList : BaseList, ISetUnsorted
     {
-        public bool delete(int elem)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public bool insert(int elem)
         {
-            throw new NotImplementedException();
+            if (!search(elem))
+            {
+                ListNode neu = new ListNode(elem);
+
+                if (root == null)
+                {
+                    root = neu;
+                    return true;
+                }
+
+
+                runner.next = neu;
+                return true;
+
+               
+
+            }
+
+            else return false;
+
+
         }
 
-        public void print()
-        {
-            throw new NotImplementedException();
-        }
 
-        public bool search(int elem)
-        {
-            throw new NotImplementedException();
-        }
+
+
     }
 }

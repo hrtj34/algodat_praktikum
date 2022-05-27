@@ -23,12 +23,12 @@ namespace AlgoDat_Praktikum
 
             if (tabsize < Tab.Length)
                 tabsize = Tab.Length;
-
-            HashFunctionUpdater(ref hashFunction, tabsize);
+           
             sondsize = tabsize;
 
             if (QuadProbeable(tabsize))
             {
+                HashFunctionUpdater(ref hashFunction, sondsize);
                 InsertTab(Tab, true);
             }
             else
@@ -54,7 +54,7 @@ namespace AlgoDat_Praktikum
 
             if (QuadProbeable(tabsize))
             {
-                tab = CreateMinusArray(tabsize);               
+                tab = CreateMinusArray(sondsize);               
             }
             else
             {
@@ -70,8 +70,15 @@ namespace AlgoDat_Praktikum
         /// <summary>
         /// Creates the structure for a hash table with quadratic probing using the division method for hashing.
         /// </summary>
+        /// <param name="Tabsize">Minimum table size</param>
         /// <param name="Tab">Array with keys to be added. Also determines minimum table size.</param>
-        public HashTabQuadProb(int[] Tab) : this(Tab.Length, Tab, new HashDiv(Tab.Length)) { }
+        public HashTabQuadProb(int Tabsize, int[] Tab) : this(Tabsize, Tab, new HashDiv(Tabsize)) { }
+
+        /// <summary>
+        /// Creates the structure for a hash table with quadratic probing using the division method for hashing.
+        /// </summary>
+        /// <param name="Tabsize">Minimum table size</param>
+        public HashTabQuadProb(int Tabsize) : this(Tabsize, new HashDiv(Tabsize)) { }
 
         /// <summary>
         /// Creates the structure for a hash table with quadratic probing using the division method for hashing and a minimum table size of 10.

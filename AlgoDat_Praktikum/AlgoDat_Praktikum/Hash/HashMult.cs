@@ -6,21 +6,16 @@ namespace AlgoDat_Praktikum
 {
     class HashMult : IHashFunction
     {
-        const uint C = 3586947843;
-        uint c;
-        int wordsize2Pow;
+        const uint c = 3586947843;
         int tabsize2Pow;
 
         /// <summary>
         /// Constructs an Object capable of generating Hashkeys with the multiplication method.
         /// </summary>
-        /// <param name="Wordsize">Accepted size of the key as powers of two</param>
         /// <param name="Tabsize">Size of table as powers of two</param>
-        public HashMult(int Wordsize, int Tabsize)
+        public HashMult(int Tabsize)
         {
-            wordsize2Pow = (int)Math.Floor(Math.Log2(Wordsize));
             tabsize2Pow = (int)Math.Floor(Math.Log2(Tabsize));
-            c = C >> 32 - wordsize2Pow;
         }
 
         /// <summary>

@@ -25,12 +25,7 @@ namespace AlgoDat_Praktikum
 
             HashFunctionUpdater(ref hashFunction, tabsize);
 
-            InsertTab(Tab, true);
-
-            foreach (Dictionary item in tab)
-            {
-
-            }
+            InsertTab(Tab, true);           
         }
 
         /// <summary>
@@ -51,8 +46,15 @@ namespace AlgoDat_Praktikum
         /// <summary>
         /// Creates structure for a hash table with table size 10 with separate chaining using the division method for hashing.
         /// </summary>
+        /// <param name="Tabsize">Minimum desired tablesize</param>
         /// <param name="Tab">Tab to be inserted into the hash table</param>
-        public HashTabSepChain(int[] Tab) : this(TABSIZE, Tab, new HashDiv(TABSIZE)) { }
+        public HashTabSepChain(int Tabsize, int[] Tab) : this(Tabsize, Tab, new HashDiv(Tabsize)) { }
+
+        /// <summary>
+        /// Creates structure for a hash table with table size 10 with separate chaining using the division method for hashing.
+        /// </summary>
+        /// <param name="Tabsize">Minimum desired tablesize</param>
+        public HashTabSepChain(int Tabsize) : this(Tabsize, new HashDiv(Tabsize)) { }
 
         /// <summary>
         /// Creates structure for a hash table with table size 10 with separate chaining using the division method for hashing.
@@ -95,7 +97,7 @@ namespace AlgoDat_Praktikum
         {
             foreach (Dictionary key in tab)
             {
-                Console.Write("-----------");
+                Console.WriteLine();
                 key.print();
             }
         }

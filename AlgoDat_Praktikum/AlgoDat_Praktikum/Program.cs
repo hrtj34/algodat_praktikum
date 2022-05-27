@@ -125,6 +125,22 @@ namespace AlgoDat_Praktikum
                                 }
                                 break;
                             case "3":
+                                int size = 10;
+                                Console.Write($"Do you want to pick the table size (Default: {size})? (y/n)? ");
+                                if(Console.ReadLine() == "y")
+                                {
+                                    bool failed = true;
+                                    do
+                                    {
+                                        Console.Write("Please enter your desired tablesize: ");
+                                        failed = !int.TryParse(Console.ReadLine(), out size);
+                                        if (size <= 0) failed = true;
+
+                                        if (failed) Console.WriteLine("Your input is not an eligible table size. Please try again.");
+                                    } while (failed);
+                                    
+                                }
+
                                 Console.Write("For QuadProb, please press Q. For SepChain, please press S. For LinProb, please press L. For DoubHash, please press D: ");
                                 string pressedKey = Console.ReadLine().ToLower();
                                 if (pressedKey == "q")
@@ -132,32 +148,64 @@ namespace AlgoDat_Praktikum
                                     Console.Write("\nFor Div, please press D. For Mult, please press M: ");
                                     if (Console.ReadLine().ToLower() == "d")
                                     {
-                                        structure = new HashTabQuadProb();
+                                        structure = new HashTabQuadProb(size);
                                     }
                                     else
                                     {
-                                        structure = new HashTabQuadProb(10, new HashMult(50, 10));
+                                        structure = new HashTabQuadProb(size, new HashMult(size));
                                     }
                                 }
                                 else if (pressedKey == "l")
                                 {
+                                    int step = 1;
+                                    Console.Write($"Do you want to pick the probing step size (Default: {step})? (y/n)? ");
+                                    if (Console.ReadLine() == "y")
+                                    {
+                                        bool failed = true;
+                                        do
+                                        {
+                                            Console.Write("Please enter your desired step size: ");
+                                            failed = !int.TryParse(Console.ReadLine(), out step);
+                                            if (step <= 1) failed = true;
 
+                                            if (failed) Console.WriteLine("Your input is not an eligible step size. Please try again.");
+                                        } while (failed);
+
+                                    }
+
+
+                                    Console.Write("\nFor Div, please press D. For Mult, please press M: ");
+                                    if (Console.ReadLine().ToLower() == "d")
+                                    {
+                                        structure = new HashTabLinProb(size, (int i) => step, new HashDiv(size));
+                                    }
+                                    else
+                                    {
+                                        structure = new HashTabLinProb(size, (int i) => step, new HashMult(size));
+                                    }
                                 }
                                 else if (pressedKey == "d")
                                 {
-
+                                    Console.Write("\nFor Div, please press D. For Mult, please press M: ");
+                                    if (Console.ReadLine().ToLower() == "d")
+                                    {
+                                        structure = new HashTabLinProb(size, new HashDiv(9).HashFunction, new HashDiv(size));
+                                    }
+                                    else
+                                    {
+                                        structure = new HashTabLinProb(size, new HashMult(size - 1).HashFunction, new HashMult(size));
+                                    }
                                 }
                                 else
                                 {
                                     Console.Write("\nFor Div, please press D. For Mult, please press M: ");
                                     if (Console.ReadLine().ToLower() == "d")
                                     {
-                                        structure = new HashTabSepChain<SetUnsortedLinkedList>();
+                                        structure = new HashTabSepChain<SetUnsortedLinkedList>(size);
                                     }
                                     else
                                     {
-
-                                        //I don't know which hash type this is
+                                        structure = new HashTabSepChain<SetUnsortedLinkedList>(size, new HashMult(size));
                                     }
                                 }
                                 Console.WriteLine();
@@ -208,63 +256,63 @@ namespace AlgoDat_Praktikum
                 try
                 {
 
-                do
-                {
-                    Console.WriteLine("\nYou can insert or delete data or you can search for data you already stored.");
-                    Console.WriteLine("To do this, please first enter which command you wish to use. Then enter your data in the next line.");
-                    Console.WriteLine("To exit the programm, please enter exit.");
-                    Console.Write("\nPlease enter a command: ");
-                    command = Console.ReadLine().ToLower();
-
-                    switch (command)
+                    do
                     {
-                        case "insert":
-                            Console.Write("Please enter your data: ");
-                            data = Convert.ToInt32(Console.ReadLine());
-                            if (!structure.insert(data))
-                            {
-                                Console.WriteLine("This key could not be stored.");
-                            }
-                            break;
-                        case "delete":
-                            Console.Write("Please enter your data: ");
-                            data = Convert.ToInt32(Console.ReadLine());
-                            if (!structure.delete(data))
-                            {
-                                Console.WriteLine("The key was not found and therefore could not be deleted.");
-                            }
-                            break;
-                        case "search":
-                            Console.Write("Please enter your data: ");
-                            data = Convert.ToInt32(Console.ReadLine());
-                            if (!structure.search(data))
-                            {
-                                structure.insert(data);
-                                Console.WriteLine("This key was not yet part of your data structure. It was inserted into it now.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("This key is saved in the data structure.");
-                            }
-                            break;
-                        case "exit":
-                            proceed = false;
-                            break;
-                        default:
-                            Console.Write("Sorry, we didn't recognize that command. Please try again!");
-                            break;
-                    }
+                        Console.WriteLine("\nYou can insert or delete data or you can search for data you already stored.");
+                        Console.WriteLine("To do this, please first enter which command you wish to use. Then enter your data in the next line.");
+                        Console.WriteLine("To exit the programm, please enter exit.");
+                        Console.Write("\nPlease enter a command: ");
+                        command = Console.ReadLine().ToLower();
 
-                    Console.Clear();
-                    Console.WriteLine("\nYour current structure:\n");
-                    structure.print();
-                    Console.WriteLine();
-                } while (proceed);
-                break;
+                        switch (command)
+                        {
+                            case "insert":
+                                Console.Write("Please enter your data: ");
+                                data = Convert.ToInt32(Console.ReadLine());
+                                if (!structure.insert(data))
+                                {
+                                    Console.WriteLine("This key could not be stored.");
+                                }
+                                break;
+                            case "delete":
+                                Console.Write("Please enter your data: ");
+                                data = Convert.ToInt32(Console.ReadLine());
+                                if (!structure.delete(data))
+                                {
+                                    Console.WriteLine("The key was not found and therefore could not be deleted.");
+                                }
+                                break;
+                            case "search":
+                                Console.Write("Please enter your data: ");
+                                data = Convert.ToInt32(Console.ReadLine());
+                                if (!structure.search(data))
+                                {
+                                    structure.insert(data);
+                                    Console.WriteLine("This key was not yet part of your data structure. It was inserted into it now.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("This key is saved in the data structure.");
+                                }
+                                break;
+                            case "exit":
+                                proceed = false;
+                                break;
+                            default:
+                                Console.Write("Sorry, we didn't recognize that command. Please try again!");
+                                break;
+                        }
+
+                        Console.Clear();
+                        Console.WriteLine("\nYour current structure:\n");
+                        structure.print();
+                        Console.WriteLine();
+                    } while (proceed);
+                    break;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("That didn't work. It seems an unforeseen error has occured. Please try again." + ex.Message); ;
+                    Console.WriteLine("That didn't work. It seems an unforeseen error has occured. Please try again. " + ex.Message); ;
                 }
             }
 

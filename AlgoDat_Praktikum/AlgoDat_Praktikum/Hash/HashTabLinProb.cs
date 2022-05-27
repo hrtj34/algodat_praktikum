@@ -28,6 +28,8 @@ namespace AlgoDat_Praktikum
             if (tabsize < Tab.Length)
                 tabsize = Tab.Length;
 
+            HashFunctionUpdater(ref hashFunction, tabsize);
+
             prime = PrimeCheck(tabsize);
 
             InsertTab(Tab, true);           
@@ -138,7 +140,7 @@ namespace AlgoDat_Praktikum
             int maxSondSteps = tabsize - 1;
             for (int i = 1; i < maxSondSteps; i++)
             {
-                index = (aux + step) % tabsize;
+                index = (aux + step * i) % tabsize;
 
                 if (MatchFinder(tab, index, ref vacantMemoriser, elem, ref matchMemoriser))
                     return (matchMemoriser, vacantMemoriser);
@@ -161,6 +163,7 @@ namespace AlgoDat_Praktikum
             if (min == 0) return false;
             if (min == 1) return true;
             if (num1 % 2 == 0 && num2 % 2 == 0) return false;
+            if (num1 % min == 0 && num2 % min == 0) return false;
 
             for (int i = 3; i <= min / i; i += 2)
             {

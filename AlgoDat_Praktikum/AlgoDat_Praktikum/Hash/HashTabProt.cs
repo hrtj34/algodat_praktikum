@@ -10,11 +10,28 @@ namespace AlgoDat_Praktikum
         protected int tabsize;
         protected IHashFunction hashFunction;
 
-      
-        public abstract bool delete(int elem);
+
+        /// <summary>
+        /// Inserts one element into the hash table.
+        /// </summary>
+        /// <param name="elem">Key of the element to be added.</param>
+        /// <returns>True for success, false for failure.</returns>
         public abstract bool insert(int elem);
-        public abstract void print();
+
+        /// <summary>
+        /// Deletes one element from the hash table.
+        /// </summary>
+        /// <param name="elem">Key of element to be deleted</param>
+        /// <returns>True for successful deletion, false if element was not found.</returns>
+        public abstract bool delete(int elem);
+
+        /// <summary>
+        /// Searches one element in hash table. Returns upon the first hit.
+        /// </summary>
+        /// <param name="elem">Key of element being searched for</param>
+        /// <returns>True if element was found, false if not.</returns>
         public abstract bool search(int elem);
+                
 
         /// <summary>
         /// Inserts all values from a table into the hash table.
@@ -42,5 +59,10 @@ namespace AlgoDat_Praktikum
                 if (!delete(Tab[i])) throw new Exception();
             }
         }
+
+        /// <summary>
+        /// Prints all keys in the hash table.
+        /// </summary>
+        public abstract void print();
     }
 }

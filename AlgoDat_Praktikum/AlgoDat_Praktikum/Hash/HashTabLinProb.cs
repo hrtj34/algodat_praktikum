@@ -12,7 +12,13 @@ namespace AlgoDat_Praktikum
         bool prime;
         StepWidth stepWidth;
 
-
+        /// <summary>
+        /// Creates structure for a hash table with variable linear probing.
+        /// </summary>
+        /// <param name="Tabsize">Minimum desired tablesize</param>
+        /// <param name="Tab">Tab to be inserted into the hash table</param>
+        /// <param name="StepWidth">Function determining the step width for each element</param>
+        /// <param name="HashFunction">Hashfunction to determine hashvalues</param>
         public HashTabLinProb(int Tabsize, int[] Tab, StepWidth StepWidth, IHashFunction HashFunction)
         {
             tabsize = Tabsize;
@@ -27,6 +33,12 @@ namespace AlgoDat_Praktikum
             InsertTab(Tab, true);           
         }
 
+        /// <summary>
+        /// Creates structure for a hash table with variable linear probing.
+        /// </summary>
+        /// <param name="Tabsize">Minimum desired tablesize</param>
+        /// <param name="StepWidth">Function determining the step width for each element</param>
+        /// <param name="HashFunction">Hashfunction to determine hashvalues</param>
         public HashTabLinProb(int Tabsize,  StepWidth StepWidth, IHashFunction HashFunction)
         {
             tabsize = Tabsize;
@@ -37,6 +49,25 @@ namespace AlgoDat_Praktikum
 
             tab = CreateMinusArray(tabsize);
         }
+
+        /// <summary>
+        /// Creates structure for a hash table with standard linear probing using the division method for hashing.
+        /// </summary>
+        /// <param name="Tabsize">Minimum desired tablesize</param>
+        /// <param name="Tab">Tab to be inserted into the hash table</param>
+        public HashTabLinProb(int Tabsize, int[] Tab) : this(Tabsize, Tab, (int i) => 1, new HashDiv(Tabsize)) { }
+
+        /// <summary>
+        /// Creates structure for a hash table with standard linear probing using the division method for hashing.
+        /// </summary>
+        /// <param name="Tabsize">Minimum desired tablesize</param>
+        public HashTabLinProb(int Tabsize) : this(Tabsize, (int i) => 1, new HashDiv(Tabsize)) { }
+
+        /// <summary>
+        /// Creates structure for a hash table with standard linear probing using the division method for hashing with tablesize 10.
+        /// </summary>
+        public HashTabLinProb() : this(TABSIZE, (int i) => 1, new HashDiv(TABSIZE)) { }
+
 
         public override bool insert(int elem)
         {
@@ -78,20 +109,11 @@ namespace AlgoDat_Praktikum
         }
 
 
-
         /// <summary>
-        /// Prints all keys in the hash table.
+        /// Searches the table for vacant spots and the given element. Stops once it reaches a vacant spot that was never held by an element or once it finds the element.
         /// </summary>
-        public override void print()
-        {
-            foreach (int key in tab)
-            {
-                Console.Write("| " + key);
-            }
-        }
-
-
-
+        /// <param name="elem">Key of the element being looked for.</param>
+        /// <returns>First int returns the index of the element if it was found, otherwise -1. Second int returns index of first vacant slot if one was found before stopping, otherwise -1.</returns>
         private (int, int) LinProbing(int elem)
         {
             int index;
@@ -125,17 +147,11 @@ namespace AlgoDat_Praktikum
         }
 
         /// <summary>
-        /// Inserts all values from a table into the hash table. Allows wiping the table beforehand by setting clean to true.
+        /// Checks if two numbers are divider extraeous.
         /// </summary>
-        /// <param name="Tab">Table whose values shall be inserted.</param>
-        /// <param name="clean">Optional argument to wipe the hash table beforehand.</param>
-        private void InsertTab(int[] Tab, bool clean)
-        {
-            if (clean) tab = CreateMinusArray(tabsize);
-
-            InsertTab(Tab);
-        }
-
+        /// <param name="num1">Number 1</param>
+        /// <param name="num2">Number 2</param>
+        /// <returns>True if the numbers are divider extraeous, false if not.</returns>
         private static bool DividerExtraneousCheck(int num1, int num2)
         {
             num1 = Math.Abs(num1);
@@ -152,6 +168,27 @@ namespace AlgoDat_Praktikum
             }
 
             return true;
+        }
+
+
+        /// <summary>
+        /// Inserts all values from a table into the hash table. Allows wiping the table beforehand by setting clean to true.
+        /// </summary>
+        /// <param name="Tab">Table whose values shall be inserted.</param>
+        /// <param name="clean">Optional argument to wipe the hash table beforehand.</param>
+        private void InsertTab(int[] Tab, bool clean)
+        {
+            if (clean) tab = CreateMinusArray(tabsize);
+
+            InsertTab(Tab);
+        }        
+
+        public override void print()
+        {
+            foreach (int key in tab)
+            {
+                Console.Write("| " + key);
+            }
         }
     }
 }

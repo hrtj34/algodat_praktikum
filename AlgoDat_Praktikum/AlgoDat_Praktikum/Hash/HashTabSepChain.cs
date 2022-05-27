@@ -8,6 +8,13 @@ namespace AlgoDat_Praktikum
     {
         Dictionary[] tab;
 
+
+        /// <summary>
+        /// Creates structure for a hash table with separate chaining.
+        /// </summary>
+        /// <param name="Tabsize">Minimum desired tablesize</param>
+        /// <param name="Tab">Tab to be inserted into the hash table</param>
+        /// <param name="HashFunction">Hashfunction to determine hashvalues</param>
         public HashTabSepChain(int Tabsize, int[] Tab, IHashFunction HashFunction)
         {
             tabsize = Tabsize;
@@ -26,6 +33,11 @@ namespace AlgoDat_Praktikum
             }
         }
 
+        /// <summary>
+        /// Creates structure for a hash table with separate chaining.
+        /// </summary>
+        /// <param name="Tabsize">Minimum desired tablesize</param>
+        /// <param name="HashFunction">Hashfunction to determine hashvalues</param>
         public HashTabSepChain(int Tabsize, IHashFunction HashFunction)
         {
             tabsize = Tabsize;
@@ -36,14 +48,17 @@ namespace AlgoDat_Praktikum
             tab = CreateInitialisedArray<Dictionary>(tabsize);
         }
 
-        public HashTabSepChain() : this(TABSIZE, new HashDiv(TABSIZE)) { }
+        /// <summary>
+        /// Creates structure for a hash table with table size 10 with separate chaining using the division method for hashing.
+        /// </summary>
+        /// <param name="Tab">Tab to be inserted into the hash table</param>
         public HashTabSepChain(int[] Tab) : this(TABSIZE, Tab, new HashDiv(TABSIZE)) { }
 
-        public override bool delete(int elem)
-        {
-            int aux = hashFunction.HashFunction(elem);
-            return tab[aux].delete(elem);
-        }
+        /// <summary>
+        /// Creates structure for a hash table with table size 10 with separate chaining using the division method for hashing.
+        /// </summary>
+        public HashTabSepChain() : this(TABSIZE, new HashDiv(TABSIZE)) { }
+
 
         public override bool insert(int elem)
         {
@@ -51,16 +66,10 @@ namespace AlgoDat_Praktikum
             return tab[aux].insert(elem);
         }
 
-        /// <summary>
-        /// Prints all keys in the hash table.
-        /// </summary>
-        public override void print()
+        public override bool delete(int elem)
         {
-            foreach (Dictionary key in tab)
-            {
-                Console.Write("-----------");
-                key.print();
-            }
+            int aux = hashFunction.HashFunction(elem);
+            return tab[aux].delete(elem);
         }
 
         public override bool search(int elem)
@@ -69,6 +78,12 @@ namespace AlgoDat_Praktikum
             return tab[aux].search(elem);
         }
 
+
+        /// <summary>
+        /// Inserts all values from a table into the hash table. Allows wiping the table beforehand by setting clean to true.
+        /// </summary>
+        /// <param name="Tab">Table whose values shall be inserted.</param>
+        /// <param name="clean">Optional argument to wipe the hash table beforehand.</param>
         private void InsertTab(int[] Tab, bool clean)
         {
             if (clean) tab = CreateInitialisedArray<Dictionary>(tabsize);
@@ -76,18 +91,13 @@ namespace AlgoDat_Praktikum
             InsertTab(Tab);
         }
 
-       
-
-        
-
-        /* private void InsertTab(Dictionary[] Tab, bool clean = false)
+        public override void print()
         {
-            if (clean) tab = CreateNullArray<Dictionary>(tabsize);
-
-            for (int i = 0; i < Tab.Length; i++)
+            foreach (Dictionary key in tab)
             {
-                insert(Tab[i]);
+                Console.Write("-----------");
+                key.print();
             }
-        } */
+        }
     }
 }

@@ -164,27 +164,48 @@ namespace AlgoDat_Praktikum
                     else
                         tempParent = tempDelete.prev; //Getthe parent
 
-                    if (tempDelete == tempParent.left) //Makeparent points to it's child so it will automatically deleted like Linked list
-                        tempParent.left = tempChild;
-                    else
-                        tempParent.right = tempChild;
+                    if (tempParent != null)
+                    {
+                        if (tempDelete == tempParent.left) //Makeparent points to it's child so it will automatically deleted like Linked list
+                            tempParent.left = tempChild;
+                        else
+                            tempParent.right = tempChild;
+                    }
+
                 }
                 else if ((tempDelete.left != null) && (tempDelete.right != null)) //It has both Left andRight child
                 {
                     predNode = GetPredecessor(tempDelete);  //Find its predecessor
 
-                    if (predNode.left != null) // Predecessor node canhave no or left child. Do below two steps only if it has left child
+                    if (predNode.left != null) // predecessor node can left child
                     {
                         tempChild = predNode.left;
-                        predNode.prev.right = tempChild; //Assign left child of predecessor to it's Parent's right.
+                        if (predNode.prev.left == predNode) // prednode is on left of its parent
+                        {
+                            predNode.prev.left = predNode.left;
+                        }
+                        else // prednode is on right of its parent
+                        {
+                            predNode.prev.right = predNode.left;
+                        }
+                        predNode.left.prev = predNode.prev; //????
+                        //predNode.prev.right = tempChild; //Assign left child of predecessor to it's Parent's right.
                     }
+
                     // delete tempDelete
                     tempDelete.key = predNode.key; // OPT might change to tempDelete = predNode
                     //Replace the value of predecessor nodeto the value of to be deleted node
-                    if (predNode.key == predNode.prev.key)
+                    if (predNode.key == predNode.prev.key && predNode.key != root.key) // fix????
                         predNode.prev.left = null;
-                    if (predNode.key == predNode.prev.right.key)
+                    //if(predNode.key == predNode.prev.key)
+                    //{
+                    //    predNode = null;
+                    //}
+                    if (predNode == predNode.prev.right)
                         predNode.prev.right = null;
+                    if (predNode == predNode.prev.left)
+                        predNode.prev.left = null;
+
                 }
                 return true;
 

@@ -172,16 +172,10 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="node"></param>
         private void Addbalancing(AVLNode currentNode, int count, bool del = false)
-        {
-            
-
+        {          
             if (currentNode != null && (count != currentNode.hL || count != currentNode.hR))
             {
                 AVLNode SafeNode = currentNode.prev as AVLNode;
-                //if (recentNode.key < recentNode.prev.key) // currentNode ist im Linken Teilbaum --> currentNode.hL muss neu berechnet werden
-                //    currentNode.hL = count;
-                //else
-                //    currentNode.hR = count;
 
                 if (currentNode.right != null) 
                     if ((currentNode.right as AVLNode).hR >= (currentNode.right as AVLNode).hL)
@@ -197,8 +191,6 @@ namespace AlgoDat_Praktikum
                         currentNode.hL = (currentNode.left as AVLNode).hL + 1;
                 else
                     currentNode.hL = 0;
-
-                // Unterschiedliche ergebnisse, aber beide ausgeglichen --> unterschied koennte bei gleichen elementen entstehen
 
                 currentNode.balance = currentNode.hR - currentNode.hL;//da
                 if (currentNode.balance != 2 && currentNode.balance != -2) // If the node is not inbalanced -> try the previous node
@@ -267,21 +259,8 @@ namespace AlgoDat_Praktikum
         }
 
 
-        // Test Region:
+        // Zur Testausgabe:
 
-        //public void inorder()
-        //{
-        //    inorder(root as AVLNode);
-        //}
-        //private void inorder(AVLNode node)
-        //{
-        //    if (node != null)
-        //    {
-        //        inorder(node.left as AVLNode);
-        //        Console.Write(node.key);
-        //        inorder(node.right as AVLNode);
-        //    }
-        //}
         //public void inorderVis()
         //{
         //    Console.WriteLine("\n_____________________________________________________\nBaum:");

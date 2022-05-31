@@ -271,7 +271,7 @@ namespace AlgoDat_Praktikum
                                 data = Convert.ToInt32(Console.ReadLine());
                                 if (!structure.insert(data))
                                 {
-                                    Console.WriteLine("This key could not be stored.");
+                                    throw new Exception("This key could not be stored.");
                                 }
                                 break;
                             case "delete":
@@ -279,7 +279,14 @@ namespace AlgoDat_Praktikum
                                 data = Convert.ToInt32(Console.ReadLine());
                                 if (!structure.delete(data))
                                 {
-                                    Console.WriteLine("The key was not found and therefore could not be deleted.");
+                                    throw new Exception("The key was not found and therefore could not be deleted.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Deletion succesful. This is your new data structure:\n");
+                                    structure.print();
+                                    Console.WriteLine("\nPress enter to continue.");
+                                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) ;
                                 }
                                 break;
                             case "search":
@@ -288,18 +295,20 @@ namespace AlgoDat_Praktikum
                                 if (!structure.search(data))
                                 {
                                     structure.insert(data);
-                                    Console.WriteLine("This key was not yet part of your data structure. It was inserted into it now.");
+                                    throw new Exception("This key was not yet part of your data structure. It was inserted into it now.");
                                 }
                                 else
                                 {
-                                    Console.WriteLine("This key is saved in the data structure.");
+                                    Console.WriteLine("Your data was found.");
+                                    Console.WriteLine("Press enter to continue.");
+                                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) ;
                                 }
                                 break;
                             case "exit":
                                 proceed = false;
                                 break;
                             default:
-                                Console.Write("Sorry, we didn't recognize that command. Please try again!");
+                                throw new Exception("Sorry, we didn't recognize that command. Please try again!");
                                 break;
                         }
 
@@ -310,9 +319,15 @@ namespace AlgoDat_Praktikum
                     } while (proceed);
                     break;
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    Console.WriteLine("That didn't work. It seems an unforeseen error has occured. Please try again. " + ex.Message); ;
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Press enter to continue.");
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter) ;
+                    Console.Clear();
+                    Console.WriteLine("\nYour current structure:\n");
+                    structure.print();
+                    Console.WriteLine();
                 }
             }
 

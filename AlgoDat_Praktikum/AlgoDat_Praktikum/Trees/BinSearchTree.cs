@@ -109,12 +109,12 @@ namespace AlgoDat_Praktikum
             /////////////////////////
             //// for debugging usage!
             /////////////////////////
-            public override string ToString()
-            {
-                string lString = (left == null) ? "null" : left.key.ToString();
-                string rString = (right == null) ? "null" : right.key.ToString();
-                return $"left:{lString} <- {key} -> right:{rString}";
-            }
+            //public override string ToString()
+            //{
+            //    string lString = (left == null) ? "null" : left.key.ToString();
+            //    string rString = (right == null) ? "null" : right.key.ToString();
+            //    return $"left:{lString} <- {key} -> right:{rString}";
+            //}
         }
         protected TreeNode root = null;
 
@@ -334,10 +334,10 @@ namespace AlgoDat_Praktikum
         #endregion
 
         #region print functions + misc.
-        public void print()
-        {
-            print(root);
-        }
+        //public void print()
+        //{
+        //    print(root);
+        //}
         private void print(TreeNode item)
         {   // kleiner -- selbst -- größer
             if (item != null)
@@ -412,22 +412,32 @@ namespace AlgoDat_Praktikum
         }
 
         // Horizontale Ausgabe eines Trees mit Einrückungen (Code aus Übung)
-        public void printHorizontal()
+        public void print()
         {
-            Console.WriteLine(PrintHorizontal(root,0));
+            int len;
+            if (this is Treap)
+                len = 9;
+            else
+                len = 4;
+            Console.WriteLine(PrintHorizontal(root,0,len));
         }
-        string PrintHorizontal(TreeNode current, int n)
+        string PrintHorizontal(TreeNode current, int n,int len)
         {
             string res = "";
             if (current != null)
             {
+                string buffer = "";
+                for (int i = 0; i <= len; i++)
+                {
+                    buffer += " ";
+                }
 
-                res += PrintHorizontal(current.right, n + 1);
+                res += PrintHorizontal(current.right, n + 1,len);
                 res += "\n";
                 for (int i = 0; i < n; i++)
-                    res += "\t";
+                    res += buffer;
                 res += $"--{current}";
-                res += PrintHorizontal(current.left, n + 1);
+                res += PrintHorizontal(current.left, n + 1,len);
             }
             return res;
         }

@@ -21,7 +21,9 @@ namespace AlgoDat_Praktikum
         /// <returns>Hashed key</returns>
         public int HashFunction(int key)
         {
-            return key % tabsize;
+            int remainder = key % tabsize;
+            return remainder < 0 ? remainder + tabsize : remainder;
+           
         }
 
         /// <summary>

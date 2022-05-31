@@ -10,9 +10,9 @@ namespace AlgoDat_Praktikum
             Console.WriteLine("Do you want to be able to store the same element more than once? (y/n)?");
             ans[0] = Console.ReadLine() == "y";
             Console.WriteLine("Do you want your data to be sorted? (y/n)");
-            ans[1] = Console.ReadLine() == "y";
+            ans[1] = Console.ReadLine() == "n";
             return ans;
-        } 
+        }
         static void Main(string[] args)
         {
             //Console.WriteLine("Hello World!");
@@ -125,17 +125,75 @@ namespace AlgoDat_Praktikum
                                 }
                                 break;
                             case "3":
-                                Console.Write("For QuadProb, please press Q. For SepChain, please press S: ");
-                                if (Console.ReadLine().ToLower() == "q")
+                                int size = 10;
+                                Console.Write($"Do you want to pick the table size (Default: {size})? (y/n)? ");
+                                if(Console.ReadLine() == "y")
+                                {
+                                    bool failed = true;
+                                    do
+                                    {
+                                        Console.Write("Please enter your desired tablesize: ");
+                                        failed = !int.TryParse(Console.ReadLine(), out size);
+                                        if (size <= 0) failed = true;
+
+                                        if (failed) Console.WriteLine("Your input is not an eligible table size. Please try again.");
+                                    } while (failed);
+                                    
+                                }
+
+                                Console.Write("For QuadProb, please press Q. For SepChain, please press S. For LinProb, please press L. For DoubHash, please press D: ");
+                                string pressedKey = Console.ReadLine().ToLower();
+                                if (pressedKey == "q")
                                 {
                                     Console.Write("\nFor Div, please press D. For Mult, please press M: ");
                                     if (Console.ReadLine().ToLower() == "d")
                                     {
-                                        structure = new HashTabQuadProb();
+                                        structure = new HashTabQuadProb(size);
                                     }
                                     else
                                     {
-                                        //I don't know which hash type this is
+                                        structure = new HashTabQuadProb(size, new HashMult(size));
+                                    }
+                                }
+                                else if (pressedKey == "l")
+                                {
+                                    int step = 1;
+                                    Console.Write($"Do you want to pick the probing step size (Default: {step})? (y/n)? ");
+                                    if (Console.ReadLine() == "y")
+                                    {
+                                        bool failed = true;
+                                        do
+                                        {
+                                            Console.Write("Please enter your desired step size: ");
+                                            failed = !int.TryParse(Console.ReadLine(), out step);
+                                            if (step <= 1) failed = true;
+
+                                            if (failed) Console.WriteLine("Your input is not an eligible step size. Please try again.");
+                                        } while (failed);
+
+                                    }
+
+
+                                    Console.Write("\nFor Div, please press D. For Mult, please press M: ");
+                                    if (Console.ReadLine().ToLower() == "d")
+                                    {
+                                        structure = new HashTabLinProb(size, (int i) => step, new HashDiv(size));
+                                    }
+                                    else
+                                    {
+                                        structure = new HashTabLinProb(size, (int i) => step, new HashMult(size));
+                                    }
+                                }
+                                else if (pressedKey == "d")
+                                {
+                                    Console.Write("\nFor Div, please press D. For Mult, please press M: ");
+                                    if (Console.ReadLine().ToLower() == "d")
+                                    {
+                                        structure = new HashTabLinProb(size, new HashDiv(9).HashFunction, new HashDiv(size));
+                                    }
+                                    else
+                                    {
+                                        structure = new HashTabLinProb(size, new HashMult(size - 1).HashFunction, new HashMult(size));
                                     }
                                 }
                                 else
@@ -143,12 +201,11 @@ namespace AlgoDat_Praktikum
                                     Console.Write("\nFor Div, please press D. For Mult, please press M: ");
                                     if (Console.ReadLine().ToLower() == "d")
                                     {
-                                        structure = new HashTabSepChain<SetUnsortedLinkedList>();
+                                        structure = new HashTabSepChain<SetUnsortedLinkedList>(size);
                                     }
                                     else
                                     {
-
-                                        //I don't know which hash type this is
+                                        structure = new HashTabSepChain<SetUnsortedLinkedList>(size, new HashMult(size));
                                     }
                                 }
                                 Console.WriteLine();
@@ -233,6 +290,10 @@ namespace AlgoDat_Praktikum
                                     structure.insert(data);
                                     Console.WriteLine("This key was not yet part of your data structure. It was inserted into it now.");
                                 }
+                                else
+                                {
+                                    Console.WriteLine("This key is saved in the data structure.");
+                                }
                                 break;
                             case "exit":
                                 proceed = false;
@@ -249,9 +310,9 @@ namespace AlgoDat_Praktikum
                     } while (proceed);
                     break;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    Console.WriteLine("That didn't work. It seems an unforeseen error has occured. Please try again."); ;
+                    Console.WriteLine("That didn't work. It seems an unforeseen error has occured. Please try again. " + ex.Message); ;
                 }
             }
 

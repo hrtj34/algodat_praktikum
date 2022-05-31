@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AlgoDat_Praktikum
 {
@@ -168,26 +166,18 @@ namespace AlgoDat_Praktikum
             }
         }
 
-
-
-        // Addbalancing and Delbalancing probably can (and at some point should) be turned into one programm
         /// <summary>
-        /// Addbalancing recalculates hR, hL and balance values after the inserting of a new,
-        /// and initialises, if necessary, FixBalance, for rebalancing.
+        /// Addbalancing recalculates hR, hL and balance after the inserting of a new element,
+        /// or deleting of a leaf elemnt, and uses, if necessary, FixBalance to rebalance the Tree.
         /// </summary>
         /// <param name="node"></param>
-        private void Addbalancing(AVLNode recentNode, int count)
-        {
-            AVLNode currentNode = recentNode.prev as AVLNode;
-            count++;
-
-            if (recentNode != root && (count > currentNode.hL || count > currentNode.hR))
+        private void Addbalancing(AVLNode currentNode, int count, bool del = false)
+        {          
+            if (currentNode != null && (count != currentNode.hL || count != currentNode.hR))
             {
-                //if (recentNode.key < recentNode.prev.key) // currentNode ist im Linken Teilbaum --> currentNode.hL muss neu berechnet werden
-                //    currentNode.hL = count;
-                //else
-                //    currentNode.hR = count;
-                if (currentNode.right != null)
+                AVLNode SafeNode = currentNode.prev as AVLNode;
+
+                if (currentNode.right != null) 
                     if ((currentNode.right as AVLNode).hR >= (currentNode.right as AVLNode).hL)
                         currentNode.hR = (currentNode.right as AVLNode).hR + 1;
                     else
@@ -202,15 +192,18 @@ namespace AlgoDat_Praktikum
                 else
                     currentNode.hL = 0;
 
-                // Unterschiedliche ergebnisse, aber beide ausgeglichen --> unterschied koennte bei gleichen elementen entstehen
-
-                currentNode.balance = currentNode.hR - currentNode.hL;
+                currentNode.balance = currentNode.hR - currentNode.hL;//da
                 if (currentNode.balance != 2 && currentNode.balance != -2) // If the node is not inbalanced -> try the previous node
-                    Addbalancing(currentNode, count);
+                    Addbalancing(SafeNode, ++count);
                 else
+                {
                     FixBalance(currentNode);
+                    if (del)
+                        Addbalancing(SafeNode,++count);
+                }
             }
         }
+        
         /// <summary>
         /// insert simply inserts a key, "elem", as a new node into the tree. 
         /// </summary>
@@ -229,42 +222,13 @@ namespace AlgoDat_Praktikum
                 TreeNode newNode = new AVLNode(elem);
                 if (binInsert(ref newNode, elem))
                 {
-                    Addbalancing(newNode as AVLNode, 0);
+                    Addbalancing(newNode.prev as AVLNode, 1);
                     return true;
                 }
                 return false;
             }
         }
-        /// <summary>
-        /// Delbalancing recalculates hR, hL and balance values after the deleting of an leaf element,
-        /// and initialises, if necessary, FixBalance, for rebalancing.
-        /// </summary>
-        /// <param name="node"></param> 
 
-
-        private void Delbalancing(AVLNode node)
-        {
-            AVLNode SafeNode = node.prev as AVLNode;
-            if (node.right != null)
-                if ((node.right as AVLNode).hR >= (node.right as AVLNode).hL)
-                    node.hR = (node.right as AVLNode).hR + 1;
-                else
-                    node.hR = (node.right as AVLNode).hL + 1;
-            else
-                node.hR = 0;
-            if (node.left != null)
-                if ((node.left as AVLNode).hR >= (node.left as AVLNode).hL)
-                    node.hL = (node.left as AVLNode).hR + 1;
-                else
-                    node.hL = (node.left as AVLNode).hL + 1;
-            else
-                node.hL = 0;
-
-            node.balance = node.hR - node.hL;
-            FixBalance(node);
-            if (SafeNode != null)
-                Delbalancing(SafeNode);
-        }
         /// <summary>
         /// if the tree contains a node with elem as key, that node is deleted
         /// </summary>
@@ -283,7 +247,7 @@ namespace AlgoDat_Praktikum
                 tempNode = tempNode.prev;
                 tempBool = base.delete(elem);
                 if (tempBool)
-                    Delbalancing(tempNode as AVLNode);
+                    Addbalancing(tempNode as AVLNode,0,true);
             }
             else // the to be deleted node is not a leaf
             {
@@ -295,21 +259,8 @@ namespace AlgoDat_Praktikum
         }
 
 
-        // Test Region:
-        
-        //public void inorder()
-        //{
-        //    inorder(root as AVLNode);
-        //}
-        //private void inorder(AVLNode node)
-        //{
-        //    if (node != null)
-        //    {
-        //        inorder(node.left as AVLNode);
-        //        Console.Write(node.key);
-        //        inorder(node.right as AVLNode);
-        //    }
-        //}
+        // Zur Testausgabe:
+
         //public void inorderVis()
         //{
         //    Console.WriteLine("\n_____________________________________________________\nBaum:");
@@ -325,6 +276,6 @@ namespace AlgoDat_Praktikum
         //        Console.WriteLine("------" + node.key);
         //        inorderVis(node.right as AVLNode, order);
         //    }
-        //}    
+        //}
     }
 }

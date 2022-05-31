@@ -71,9 +71,13 @@ namespace AlgoDat_Praktikum
                 array[i] = default;
             }
         }
-        protected static Dictionary[] CreateNullArray<Dictionary>(int length) where Dictionary : IDictionary
+        protected static Dictionary[] CreateInitialisedArray<Dictionary>(int length) where Dictionary : IDictionary, new()
         {
             Dictionary[] array = new Dictionary[length];
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = new Dictionary();
+            }
             return array;
         }
 

@@ -23,12 +23,12 @@ namespace AlgoDat_Praktikum
 
             if (tabsize < Tab.Length)
                 tabsize = Tab.Length;
-
-            HashFunctionUpdater(ref hashFunction, tabsize);
+           
             sondsize = tabsize;
 
             if (QuadProbeable(tabsize))
             {
+                HashFunctionUpdater(ref hashFunction, sondsize);
                 InsertTab(Tab, true);
             }
             else
@@ -54,7 +54,7 @@ namespace AlgoDat_Praktikum
 
             if (QuadProbeable(tabsize))
             {
-                tab = CreateMinusArray(tabsize);               
+                tab = CreateMinusArray(sondsize);               
             }
             else
             {
@@ -65,31 +65,33 @@ namespace AlgoDat_Praktikum
 
             }
             
-        }
-
-        /// <summary>
-        /// Creates the structure for a hash table with quadratic probing using the division method for hashing and a minimum table size of 50.
-        /// </summary>
-        public HashTabQuadProb() : this(TABSIZE, new HashDiv(TABSIZE)) { }
+        }       
 
         /// <summary>
         /// Creates the structure for a hash table with quadratic probing using the division method for hashing.
         /// </summary>
+        /// <param name="Tabsize">Minimum table size</param>
         /// <param name="Tab">Array with keys to be added. Also determines minimum table size.</param>
-        public HashTabQuadProb(int[] Tab) : this(Tab.Length, Tab, new HashDiv(Tab.Length)) { }
-
+        public HashTabQuadProb(int Tabsize, int[] Tab) : this(Tabsize, Tab, new HashDiv(Tabsize)) { }
 
         /// <summary>
-        /// Inserts one element into the hash table.
+        /// Creates the structure for a hash table with quadratic probing using the division method for hashing.
         /// </summary>
-        /// <param name="elem">Key of the element to be added.</param>
-        /// <returns>True for success, false for failure.</returns>
+        /// <param name="Tabsize">Minimum table size</param>
+        public HashTabQuadProb(int Tabsize) : this(Tabsize, new HashDiv(Tabsize)) { }
+
+        /// <summary>
+        /// Creates the structure for a hash table with quadratic probing using the division method for hashing and a minimum table size of 10.
+        /// </summary>
+        public HashTabQuadProb() : this(TABSIZE, new HashDiv(TABSIZE)) { }
+
+
         public override bool insert(int elem)
         {
             int elemSlot;
             int vacantSlot;
             (elemSlot, vacantSlot) = QuadProbing(elem);
-
+            Console.WriteLine(elemSlot + " M " + vacantSlot);
             if (elemSlot == -1 && vacantSlot != -1)
             {
                 tab[vacantSlot] = elem;
@@ -98,11 +100,6 @@ namespace AlgoDat_Praktikum
             else return false;
         }
 
-        /// <summary>
-        /// Deletes one element from the hash table.
-        /// </summary>
-        /// <param name="elem">Key of element to be deleted</param>
-        /// <returns>True for successful deletion, false if element was not found.</returns>
         public override bool delete(int elem)
         {
             int elemSlot;
@@ -116,11 +113,6 @@ namespace AlgoDat_Praktikum
             return false;
         }
 
-        /// <summary>
-        /// Searches one element in hash table. Returns upon the first hit.
-        /// </summary>
-        /// <param name="elem">Key of element being searched for</param>
-        /// <returns>True if element was found, false if not.</returns>
         public override bool search(int elem)
         {
             int elemSlot;
@@ -132,6 +124,7 @@ namespace AlgoDat_Praktikum
             }
             return false;
         }
+
 
         /// <summary>
         /// Searches the table for vacant spots and the given element. Stops once it reaches a vacant spot that was never held by an element or once it finds the element.
@@ -153,23 +146,25 @@ namespace AlgoDat_Praktikum
                 return (matchMemoriser, vacantMemoriser);
 
             int maxSondSteps = (tab.Length - 1) / 2;
-            for (int i = 1; i < maxSondSteps; i++)
+            for (int i = 1; i <= maxSondSteps; i++)
             {
                 int iSquare = i * i;
                 index = (aux + iSquare) % sondsize;
+                if(index < 0)
+                    index += sondsize;
 
                 if (MatchFinder(tab, index, ref vacantMemoriser, elem, ref matchMemoriser))
                     return (matchMemoriser, vacantMemoriser);
 
                 index = (aux - iSquare) % sondsize;
+                if (index < 0)
+                    index += sondsize;
 
                 if (MatchFinder(tab, index, ref vacantMemoriser, elem, ref matchMemoriser))
                     return (matchMemoriser, vacantMemoriser);
             }
             return (matchMemoriser, vacantMemoriser);
-        }
-
-        
+        }        
 
         /// <summary>
         /// Checks if a tablesize/ number is suitable for quadratic probeing.
@@ -200,17 +195,9 @@ namespace AlgoDat_Praktikum
             if (clean) tab = CreateMinusArray(sondsize);
 
             InsertTab(Tab);
-        }
+        }       
 
         
-
-        
-
-        
-
-        /// <summary>
-        /// Prints all keys in the hash table.
-        /// </summary>
         public override void print()
         {
             foreach (int key in tab)

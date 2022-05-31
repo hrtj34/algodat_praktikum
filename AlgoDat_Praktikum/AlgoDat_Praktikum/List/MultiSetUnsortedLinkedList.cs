@@ -7,25 +7,12 @@ namespace AlgoDat_Praktikum
     class MultiSetUnsortedLinkedList : BaseList, IMultiSetUnsorted
     {
 
-        public bool delete(int elem)
-        {
-            if (!SearchNode(elem))
-                return false;
-            if (root.key == elem)
-            { 
-                root = root.next; return true; 
-            }
-            else
-                runner.next = runner.next.next;
-            return true;
-            
-        }
-
         public bool insert(int elem)
         {
             runner = root;
 
             ListNode neu = new ListNode(elem);
+
             if (root == null)
             {
                 root = neu;
@@ -41,7 +28,6 @@ namespace AlgoDat_Praktikum
 
                 runner.next = neu;
                 return true;
-
             }
 
 
@@ -49,16 +35,6 @@ namespace AlgoDat_Praktikum
 
         }
 
-        public void print()
-        {
-            Console.WriteLine("hallo");
-            return;
-        }
-
-        public bool search(int elem)
-        {
-            return SearchNode(elem);
-        }
 
         
     }

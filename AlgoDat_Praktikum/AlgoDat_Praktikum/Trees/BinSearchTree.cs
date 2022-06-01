@@ -195,8 +195,10 @@ namespace AlgoDat_Praktikum
                     // delete tempDelete
                     tempDelete.key = predNode.key; // OPT might change to tempDelete = predNode
                     //Replace the value of predecessor nodeto the value of to be deleted node
-                    if (predNode.key == predNode.prev.key && predNode.key != root.key) // fix????
-                        predNode.prev.left = null;
+                    
+                    //if (predNode.key == predNode.prev.key && predNode.key != root.key) // fix???? // double fix?
+                    //    predNode.prev.left = null;
+                    
                     //if(predNode.key == predNode.prev.key)
                     //{
                     //    predNode = null;

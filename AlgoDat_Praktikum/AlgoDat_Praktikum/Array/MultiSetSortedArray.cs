@@ -11,7 +11,7 @@ namespace AlgoDat_Praktikum
         protected int binsearch(int elem)
         {
             int l = 0;
-            int r = arrayl;
+            int r = arrayl - 1;
             int i = 0;
             do
             {

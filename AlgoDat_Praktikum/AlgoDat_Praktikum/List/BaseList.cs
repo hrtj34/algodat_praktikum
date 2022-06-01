@@ -19,9 +19,9 @@ namespace AlgoDat_Praktikum
 
         public void print()
         {
-            Console.Write("| ");
+
             if (root != null)
-                runner = root;
+            { runner = root; Console.Write("| "); }
             else
                 return;
 
@@ -70,19 +70,20 @@ namespace AlgoDat_Praktikum
                 root = root.next; return true;
             }
             else
-                runner = root;
-
-            while(runner.next != null)
-            {
-                if (runner.next.key == elem)
-                {
-                    runner.next = runner.next.next;
-                    return true;
-                }
-                runner = runner.next;
-            }
-
+                runner.next = runner.next.next;
             return true;
+
+            //while (runner.next != null)
+            //{
+            //    if (runner.next.key == elem)
+            //    {
+            //        runner.next = runner.next.next;
+            //        return true;
+            //    }
+            //    runner = runner.next;
+            //}
+
+            //return false; 
 
         }
 

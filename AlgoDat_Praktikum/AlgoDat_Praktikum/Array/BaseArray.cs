@@ -14,10 +14,12 @@ abstract class BaseArray
         }
         protected int sequsearch (int elem)
         {
-            int i = 0;
-            while (array[i] != elem)
-                i++;
-            return i;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == elem)
+                    return i;
+            }
+            return array.Length;
         }
         public void print()
         {

@@ -188,7 +188,7 @@ namespace AlgoDat_Praktikum
                         {
                             predNode.prev.right = predNode.left;
                         }
-                        predNode.left.prev = predNode.prev; //????
+                        predNode.left.prev = predNode.prev; //Update the previous node for the child of the predecessor to its new parent
                         //predNode.prev.right = tempChild; //Assign left child of predecessor to it's Parent's right.
                     }
 

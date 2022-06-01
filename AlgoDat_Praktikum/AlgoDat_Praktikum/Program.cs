@@ -18,40 +18,10 @@ namespace AlgoDat_Praktikum
             //Console.WriteLine("Hello World!");
             // HashUserInterface a = new HashUserInterface();
             // a.ConsoleStartScreen();
-
-            #region Treap Tests
-            //Treap myTreap = new Treap();
-
-            //myTreap.insert(7);
-            //myTreap.insert(5);
-            //myTreap.insert(3);
-            //myTreap.insert(6);
-            //myTreap.insert(1);
-            //myTreap.insert(11);
-            //myTreap.insert(14);
-            //myTreap.insert(8);
-            //myTreap.insert(15);
-            //myTreap.insert(12);
-            //myTreap.printHorizontal();
-            //myTreap.insert(13);
-
-            //Console.WriteLine();
-
-            //myTreap.delete(13);
-
-            //myTreap.printHorizontal();
-            #endregion
-
-            Console.WriteLine("Welcome to our programm! It lets you store your data in all our sorts of different structures.");
-            Console.WriteLine("You can choose from the following:\n");
-            Console.WriteLine("1 Array");
-            Console.WriteLine("2 List");
-            Console.WriteLine("3 Hash Table");
-            Console.WriteLine("4 Binary Search Tree");
-            Console.WriteLine("5 AVL - Tree");
-            Console.WriteLine("6 Treap\n");
+            
             IDictionary structure = null;
             string res;
+            bool proceed = true;
 
             while (true)
             //keeps trying until no error has occured
@@ -60,7 +30,17 @@ namespace AlgoDat_Praktikum
                 {
                     do
                     {
+                        Console.Clear();
+                        Console.WriteLine("Welcome to our programm! It lets you store your data in all our sorts of different structures.");
+                        Console.WriteLine("You can choose from the following:\n");
+                        Console.WriteLine("1 Array");
+                        Console.WriteLine("2 List");
+                        Console.WriteLine("3 Hash Table");
+                        Console.WriteLine("4 Binary Search Tree");
+                        Console.WriteLine("5 AVL - Tree");
+                        Console.WriteLine("6 Treap\n");
                         Console.Write("Please enter the number of your choice: ");
+
                         res = Console.ReadLine();
                         switch (res)
                         {
@@ -228,12 +208,27 @@ namespace AlgoDat_Praktikum
                                 res = "y";
                                 break;
                         }
-                        if (res != "y")
+
+                        Console.WriteLine("If you want to continue, please press enter. If you want to chance your choise, please press escape.");
+                        while (true) //waits for enter to be pressed without displaying input
                         {
-                            Console.Write("Do you want to change your choice? (y/n) ");
-                            res = Console.ReadLine();
+                            ConsoleKey key;
+                            if (Console.KeyAvailable)
+                            {
+                                key = Console.ReadKey(true).Key;
+                                if (key == ConsoleKey.Enter)
+                                {
+                                    proceed = false;
+                                    break;
+                                }
+                                else if (key == ConsoleKey.Escape)
+                                {
+                                    proceed = true;
+                                    break;
+                                }
+                            }
                         }
-                    } while (res != "n");
+                    } while (proceed);
                     break;
                 }
                 catch
@@ -241,15 +236,11 @@ namespace AlgoDat_Praktikum
                     Console.WriteLine("An unforeseen error has occured. Please try again!");
                 }
             }
-
-            Console.WriteLine("Wonderful! Now you can work with your chosen data structure.");
-            Console.WriteLine("Press enter to continue.");
-            while (Console.ReadKey(true).Key != ConsoleKey.Enter) ; //waits for enter to be pressed without displaying input
             Console.Clear();
 
-            bool proceed = true;
+            proceed = true;
             int data;
-            string command;
+            string command = "",input;
             while (true)
             //keeps trying until no error has occured
             {
@@ -261,8 +252,17 @@ namespace AlgoDat_Praktikum
                         Console.WriteLine("\nYou can insert or delete data or you can search for data you already stored.");
                         Console.WriteLine("To do this, please first enter which command you wish to use. Then enter your data in the next line.");
                         Console.WriteLine("To exit the programm, please enter exit.");
-                        Console.Write("\nPlease enter a command: ");
-                        command = Console.ReadLine().ToLower();
+
+                        Console.WriteLine($"\nTo use your previous command {command} again, please press enter.");
+                        Console.Write("Please enter a command: ");
+                        input = Console.ReadLine().ToLower();
+                        if (input != "")
+                            command = input;
+                        else
+                        {
+                            Console.SetCursorPosition(Console.CursorLeft,Console.CursorTop-1);
+                            Console.WriteLine($"Please enter a command: {command}");
+                        }
 
                         switch (command)
                         {
@@ -294,8 +294,10 @@ namespace AlgoDat_Praktikum
                                 data = Convert.ToInt32(Console.ReadLine());
                                 if (!structure.search(data))
                                 {
-                                    structure.insert(data);
-                                    throw new Exception("This key was not yet part of your data structure. It was inserted into it now.");
+                                    if (structure.insert(data))
+                                        throw new Exception("This key is not yet part of your data structure. It was inserted into it now.");
+                                    else
+                                        throw new Exception("This key is not yet part of your data structure, but it was also not possible to insert it.");
                                 }
                                 else
                                 {
@@ -309,6 +311,7 @@ namespace AlgoDat_Praktikum
                                 break;
                             default:
                                 throw new Exception("Sorry, we didn't recognize that command. Please try again!");
+                                command = "";
                                 break;
                         }
 

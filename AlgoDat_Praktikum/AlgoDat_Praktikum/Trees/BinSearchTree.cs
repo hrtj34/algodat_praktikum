@@ -232,19 +232,8 @@ namespace AlgoDat_Praktikum
             {
                 if (current.left != null)
                     return FindBinSTreeMax(current.left);
-                else 
-                {
-                    TreeNode tempParent = current.prev;
-                    while ((tempParent != null) && (current == tempParent.left)) // current is left child of its parent and the parent exists
-                    {
-                        current = tempParent; // walk upwards in the tree
-                        tempParent = tempParent.prev;
-                    } // there is no parent of the current element
-                    if (tempParent != null)
-                        return tempParent;
-                    else
-                        return null;
-                }
+                else
+                    return null;
             }
             return null;
         }

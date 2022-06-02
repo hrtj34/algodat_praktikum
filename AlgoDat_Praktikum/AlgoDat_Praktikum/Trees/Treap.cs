@@ -20,7 +20,7 @@ namespace AlgoDat_Praktikum
             {
                 this.prio = prio;
             }
-            public override string ToString() => $"({key}, {prio})";
+            public override string ToString() => $"({key};{prio})";
         }
 
         //Rotation Funktionen ebenfalls moeglicherweiser aus BinTree
@@ -76,21 +76,6 @@ namespace AlgoDat_Praktikum
             temp.prev = currentNode;
         }
         
-        /// <summary>
-        /// private function used to rotate nodes through a treap
-        /// calls on private functions leftRotation and rightRotation
-        /// </summary>
-        /// <param name="currentNode"> node in relation to which is rotated </param>
-        void rotation(TreapNode currentNode)
-        {
-            while (currentNode != root && (currentNode.prev as TreapNode).prio > currentNode.prio)
-            {
-                if (currentNode.prev.right == currentNode)
-                    leftRotation(currentNode);
-                else
-                    rightRotation(currentNode);
-            }
-        }
         
         /// <summary>
         /// public insert function for treap, sends integer element to correct position in treap
@@ -111,7 +96,15 @@ namespace AlgoDat_Praktikum
                 TreeNode newNode = new TreapNode(elem);
                 if (binInsert(ref newNode, elem))
                 {
-                    rotation(newNode as TreapNode);
+                    TreapNode currentNode = newNode as TreapNode;
+                    while (currentNode != root && (currentNode.prev as TreapNode).prio > currentNode.prio)
+                    {
+                        TreeNode temp = currentNode.prev;
+                        if (currentNode.prev.right == currentNode)
+                            leftRotation(currentNode);
+                        else
+                            rightRotation(currentNode);
+                    }
                     return true;
                 }
                 return false;
@@ -127,7 +120,11 @@ namespace AlgoDat_Praktikum
         {
             if (root == null)
                 return false;
-
+            if (elem == root.key && root.left == null && root.right == null)
+            {
+                root = null;
+                return true;
+            }
             TreapNode delNode = SearchNode(elem) as TreapNode;
 
             if (delNode != null)

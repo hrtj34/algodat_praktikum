@@ -21,12 +21,16 @@ namespace AlgoDat_Praktikum
 
             else
             {
-                while (runner.next != null)
-                {
-                    runner = runner.next;
-                }
+                neu.next = root;
+                root = neu;
 
-                runner.next = neu;
+                //while (runner.next != null)
+                //{
+                //    runner = runner.next;
+                //}
+
+                //runner.next = neu;
+
                 return true;
             }
 

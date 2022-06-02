@@ -93,11 +93,7 @@ namespace AlgoDat_Praktikum
     /// Adds left, right and prev;
     /// Has optional ToString function for TreeNodes for easier debugging
     /// </para>
-    /// 
-    /// 
-    /// TODO: ALTE FUNKTIONEN SIND UNTEN KOMMENTIERT!
-    /// optimize code (probably useless ifs n other stuff)
-    ///       
+    ///  ALTE FUNKTIONEN SIND UNTEN KOMMENTIERT!
     /// </summary>
     class BinSearchTree : ISetSorted
     {
@@ -135,85 +131,80 @@ namespace AlgoDat_Praktikum
         /// <returns></returns>
         private bool deleteNode(int elem)
         {
+            // initiate some important variables needed for the different delete cases 
             TreeNode tempChild = null;
             TreeNode tempParent = null;
             TreeNode predNode = null;
-            TreeNode tempDelete = SearchNode(elem);
+
+            TreeNode tempDelete = SearchNode(elem); // search for the Node
             if (tempDelete != null)
             {
-                if ((tempDelete.left == null) && (tempDelete.right == null)) //Its a Leaf node
+                ///////---------LEAF-CASE---------///////
+                if ((tempDelete.left == null) && (tempDelete.right == null))
                 {
-                    if (tempDelete == root)
+                    if (tempDelete == root) // if there is only 1 element (root), delete that single node
                     {
                         root = null;
                         return true;
                     }
                     tempParent = tempDelete.prev;
-                    if (tempDelete == tempParent.left) //Justremove by making it null
+                    if (tempDelete == tempParent.left) // navigate to delnodes parent and set the coresponding pointer to null
                         tempParent.left = null;
                     else
                         tempParent.right = null;
                 }
-                else if ((tempDelete.left == null) || (tempDelete.right == null)) //It has either Left orRight child
+
+
+                ///////---------SINGLE-CHILD-CASE---------///////
+                else if ((tempDelete.left == null) || (tempDelete.right == null)) // delnode has either Left orRight child
                 {
-                    tempChild = tempDelete.left == null ? tempDelete.right : tempDelete.left; //Get the child
-                    if (tempDelete == root)
+                    tempChild = tempDelete.left == null ? tempDelete.right : tempDelete.left; // get delnodes child
+                    if (tempDelete == root) // if delnode is root, set root to its child, since there is only one and set childs prev to null
                     {
                         root = tempChild;
+                        tempChild.prev = null;
                     }
                     else
-                        tempParent = tempDelete.prev; //Getthe parent
+                        tempParent = tempDelete.prev; // otherwise get delnodes parent
 
-                    if (tempParent != null)
+                    if (tempParent != null) // if it DOES have a parent
                     {
-                        if (tempDelete == tempParent.left) //Makeparent points to it's child so it will automatically deleted like Linked list
+                        if (tempDelete == tempParent.left) // make delNodes parent point to delNodes only child (depending on if its a right or left child)
                             tempParent.left = tempChild;
                         else
                             tempParent.right = tempChild;
+                        tempChild.prev = tempParent; // set previous of delnodes child to delnodes parent (get rid of delnode completely!)
                     }
-
                 }
-                else if ((tempDelete.left != null) && (tempDelete.right != null)) //It has both Left andRight child
-                {
-                    predNode = GetPredecessor(tempDelete);  //Find its predecessor
 
-                    if (predNode.left != null) // predecessor node can left child
+                ///////---------MULTIPLE-CHILDREN-CASE---------///////
+                else if ((tempDelete.left != null) && (tempDelete.right != null)) // delnode has both a left and a right child
+                {
+                    predNode = GetPredecessor(tempDelete);  // find its predecessor
+
+                    if (predNode.left != null) // predecessor node can only have a LEFT child or NO child
                     {
                         tempChild = predNode.left;
                         if (predNode.prev.left == predNode) // prednode is on left of its parent
-                        {
-                            predNode.prev.left = predNode.left;
-                        }
+                            predNode.prev.left = predNode.left; // rewire nodes accordingly
                         else // prednode is on right of its parent
-                        {
                             predNode.prev.right = predNode.left;
-                        }
-                        predNode.left.prev = predNode.prev; //Update the previous node for the child of the predecessor to its new parent
-                        //predNode.prev.right = tempChild; //Assign left child of predecessor to it's Parent's right.
+                        predNode.left.prev = predNode.prev; // rewire nodes accordingly
+                        // predNode.prev.right = tempChild;;; Assign left child of predecessor to it's Parent's right.
                     }
 
-                    // delete tempDelete
-                    tempDelete.key = predNode.key; // OPT might change to tempDelete = predNode
-                    //Replace the value of predecessor nodeto the value of to be deleted node
-                    
-                    //if (predNode.key == predNode.prev.key && predNode.key != root.key) // fix???? // double fix?
-                    //    predNode.prev.left = null;
-                    
-                    //if(predNode.key == predNode.prev.key)
-                    //{
-                    //    predNode = null;
-                    //}
-                    if (predNode == predNode.prev.right)
-                        predNode.prev.right = null;
-                    if (predNode == predNode.prev.left)
-                        predNode.prev.left = null;
-
+                    // 'delete' delNode (temp delete) now
+                    tempDelete.key = predNode.key;
+                    if (predNode == predNode.prev.left) // rewire nodes accordingly
+                        predNode.prev.left = predNode.prev.left.left;
+                    if (predNode == predNode.prev.right) // rewire nodes accordingly
+                        predNode.prev.right = predNode.prev.right.left;
                 }
-                return true;
+                return true; // node has been found and probably deleted, unless there is still smthing wrong with this code
 
             }
             else
-                return false;
+                return false; // node couldnt be found!
         }
         
         /// <summary>
@@ -221,15 +212,12 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        private TreeNode FindBTreeMax(TreeNode root)
+        private TreeNode FindBinSTreeMax(TreeNode root)
         {
-            TreeNode current = root;
-            if (current.right == null)
-            {
+            TreeNode current = root; 
+            if (current.right == null) // recursively find biggest element of a (Sub-)Tree, if current has a left child
                 return current;
-
-            }
-            return FindBTreeMax(current.right);
+            return FindBinSTreeMax(current.right);
         }
         /// <summary>
         /// additional function for DeleteNode to find the predecessor of a TreeNode, used by DeleteNode
@@ -243,15 +231,15 @@ namespace AlgoDat_Praktikum
             if (element != null)
             {
                 if (current.left != null)
-                    return FindBTreeMax(current.left);
-                else
+                    return FindBinSTreeMax(current.left);
+                else 
                 {
                     TreeNode tempParent = current.prev;
-                    while ((tempParent != null) && (current == tempParent.left))
+                    while ((tempParent != null) && (current == tempParent.left)) // current is left child of its parent and the parent exists
                     {
-                        current = tempParent;
+                        current = tempParent; // walk upwards in the tree
                         tempParent = tempParent.prev;
-                    }
+                    } // there is no parent of the current element
                     if (tempParent != null)
                         return tempParent;
                     else
@@ -283,8 +271,7 @@ namespace AlgoDat_Praktikum
         /// <returns></returns>
         protected bool binInsert(ref TreeNode newItem, int elem) // check positions of return
         {
-            // newItem = new TreeNode(elem);
-            if (root == null)
+            if (root == null) // insert a new root into an empty tree
             {
                 root = newItem;
                 return true;
@@ -294,25 +281,23 @@ namespace AlgoDat_Praktikum
                 TreeNode item = root;
                 while (elem != item.key)
                 {
-                    if (elem < item.key) // linker Teilbaum
+                    if (elem < item.key) // go to left subtree
                     {
                         if (item.left == null)
                         {
                             item.left = newItem;
                             item.left.prev = item;
-                            // done = true;
                             return true;
                         }
                         else
                             item = item.left;
                     }
-                    else
+                    else    // go to right subtree
                     {
                         if (item.right == null)
                         {
                             item.right = newItem;
                             item.right.prev = item;
-                            //done = true;
                             return true;
                         }
                         else

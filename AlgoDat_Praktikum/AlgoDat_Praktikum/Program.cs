@@ -310,8 +310,8 @@ namespace AlgoDat_Praktikum
                                 proceed = false;
                                 break;
                             default:
-                                throw new Exception("Sorry, we didn't recognize that command. Please try again!");
                                 command = "";
+                                throw new Exception("Sorry, we didn't recognize that command. Please try again!");
                                 break;
                         }
 

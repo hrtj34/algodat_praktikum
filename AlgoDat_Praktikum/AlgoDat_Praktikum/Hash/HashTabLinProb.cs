@@ -126,7 +126,7 @@ namespace AlgoDat_Praktikum
 
             if (!(prime && step < 2 * tabsize) && step != 1)
             {
-                for (; !DividerExtraneousCheck(tabsize, step); step--){}
+                while (!DividerExtraneousCheck(tabsize, step)) step--;
             }               
                 
 

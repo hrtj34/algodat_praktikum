@@ -91,7 +91,6 @@ namespace AlgoDat_Praktikum
             int elemSlot;
             int vacantSlot;
             (elemSlot, vacantSlot) = QuadProbing(elem);
-            Console.WriteLine(elemSlot + " M " + vacantSlot);
             if (elemSlot == -1 && vacantSlot != -1)
             {
                 tab[vacantSlot] = elem;

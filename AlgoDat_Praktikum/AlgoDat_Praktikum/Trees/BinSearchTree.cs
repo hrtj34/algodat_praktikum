@@ -181,24 +181,22 @@ namespace AlgoDat_Praktikum
                 else if ((tempDelete.left != null) && (tempDelete.right != null)) // delnode has both a left and a right child
                 {
                     predNode = GetPredecessor(tempDelete);  // find its predecessor
-
+                    tempDelete.key = predNode.key;
                     if (predNode.left != null) // predecessor node can only have a LEFT child or NO child
                     {
-                        tempChild = predNode.left;
                         if (predNode.prev.left == predNode) // prednode is on left of its parent
                             predNode.prev.left = predNode.left; // rewire nodes accordingly
                         else // prednode is on right of its parent
                             predNode.prev.right = predNode.left;
                         predNode.left.prev = predNode.prev; // rewire nodes accordingly
-                        // predNode.prev.right = tempChild;;; Assign left child of predecessor to it's Parent's right.
                     }
-
-                    // 'delete' delNode (temp delete) now
-                    tempDelete.key = predNode.key;
-                    if (predNode == predNode.prev.left) // rewire nodes accordingly
-                        predNode.prev.left = predNode.prev.left.left;
-                    if (predNode == predNode.prev.right) // rewire nodes accordingly
-                        predNode.prev.right = predNode.prev.right.left;
+                    else // predNode doesnt have a child ->  can be set to null
+                    {
+                        if (predNode == predNode.prev.left)
+                            predNode.prev.left = null;
+                        if (predNode == predNode.prev.right) // rewire nodes accordingly
+                            predNode.prev.right = null;
+                    }
                 }
                 return true; // node has been found and probably deleted, unless there is still smthing wrong with this code
 

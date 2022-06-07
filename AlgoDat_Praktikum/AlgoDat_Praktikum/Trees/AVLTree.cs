@@ -237,6 +237,8 @@ namespace AlgoDat_Praktikum
         /// false if the tree contains no such node</returns>
         public override bool delete(int elem)
         {
+            if (root == null)
+                return false;
             TreeNode tempNode = root;
             search(ref tempNode, elem);
             bool tempBool;

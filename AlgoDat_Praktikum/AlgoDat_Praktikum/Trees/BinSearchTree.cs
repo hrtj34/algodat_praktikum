@@ -137,7 +137,7 @@ namespace AlgoDat_Praktikum
             TreeNode predNode = null;
 
             TreeNode tempDelete = SearchNode(elem); // search for the Node
-            if (tempDelete != null)
+            if (tempDelete != null && tempDelete.key == elem)
             {
                 ///////---------LEAF-CASE---------///////
                 if ((tempDelete.left == null) && (tempDelete.right == null))
@@ -256,42 +256,31 @@ namespace AlgoDat_Praktikum
         /// </summary>
         /// <param name="elem"></param>
         /// <returns></returns>
-        protected bool binInsert(ref TreeNode newItem, int elem) // check positions of return
+        protected bool binInsert(ref TreeNode newItem, int elem) // remove ref TreeNode
         {
+            newItem.key = elem;
+            // insert as root!
             if (root == null) // insert a new root into an empty tree
             {
                 root = newItem;
                 return true;
             }
-            else
-            {
-                TreeNode item = root;
-                while (elem != item.key)
-                {
-                    if (elem < item.key) // go to left subtree
-                    {
-                        if (item.left == null)
-                        {
-                            item.left = newItem;
-                            item.left.prev = item;
-                            return true;
-                        }
-                        else
-                            item = item.left;
-                    }
-                    else    // go to right subtree
-                    {
-                        if (item.right == null)
-                        {
-                            item.right = newItem;
-                            item.right.prev = item;
-                            return true;
-                        }
-                        else
-                            item = item.right;
-                    }
-                }
+            TreeNode insKey = SearchNode(elem);
+            if (insKey.key == elem) // we found insKey in the tree => ITEM IS ALREADY IN THE TREE ==> FALSE BCS DIDNT INSERT
                 return false;
+            else // insKey is refering to parent key of where elem should go
+            {
+                if (elem < insKey.key) // elem is left child of the parent
+                {
+                    insKey.left = newItem;
+                    insKey.left.prev = insKey;
+                }
+                else // elem is right child of the parent
+                {
+                    insKey.right = newItem;
+                    insKey.right.prev = insKey;
+                }
+                return true;
             }
         }
         #endregion
@@ -304,7 +293,8 @@ namespace AlgoDat_Praktikum
         /// <returns></returns>
         public bool search(int elem)
         {
-            if (SearchNode(elem) != null)
+            TreeNode output = SearchNode(elem);
+            if (output != null && output.key == elem) // return true in case elem was found (!= null) AND searchNode didnt return its parent (output.key == elem)
                 return true;
             else
                 return false;
@@ -318,13 +308,19 @@ namespace AlgoDat_Praktikum
         protected TreeNode SearchNode(int elem)
         {
             TreeNode item = root;
+            TreeNode prevItem = null;
             while (item != null)
             {
                 if (elem == item.key)
                     return item;
-                item = (elem < item.key) ? item.left : item.right;
+
+                prevItem = item; // get the previous item in case we need to refer to it for the case that elem is not in tree
+
+                item = (elem < item.key) ? item.left : item.right; // progress through the tree
             }
-            return null;
+            // element is not in tree => return the "location" where it should be!
+            // prevItem is pointing at the parents location
+            return prevItem;
         }
         #endregion
 

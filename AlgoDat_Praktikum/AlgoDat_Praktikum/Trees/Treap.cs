@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -127,7 +127,9 @@ namespace AlgoDat_Praktikum
             }
             TreapNode delNode = SearchNode(elem) as TreapNode;
 
-            if (delNode != null)
+            if (delNode != null &&  delNode.key == elem) // added the "&&"part - works with newest iteration of SearchNode
+                                                         // since we have to check if we received the parent
+                                                         // node (in case we couldnt find elem in the tree) or the actual node
             {
                 //rotates delNode down the treap until it becomes a leaf
                 while (!(delNode.left == null && delNode.right == null))

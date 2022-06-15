@@ -239,8 +239,11 @@ namespace AlgoDat_Praktikum
         {
             if (root == null)
                 return false;
-            TreeNode tempNode = root;
-            search(ref tempNode, elem);
+            TreeNode tempNode = SearchNode(elem);
+            if(tempNode.key != elem)
+                return false;
+
+
             bool tempBool;
             if (tempNode == root)
                 return base.delete(elem);

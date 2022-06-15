@@ -30,6 +30,8 @@ namespace AlgoDat_Praktikum
 
         public bool delete(int elem)
         {
+            if (arrayl == 0)
+                return false;
             int delel = sequsearch(elem);
             if (delel == array.Length)
                 return false;

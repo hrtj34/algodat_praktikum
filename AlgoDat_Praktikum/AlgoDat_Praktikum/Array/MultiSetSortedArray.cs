@@ -68,6 +68,8 @@ namespace AlgoDat_Praktikum
         }
         public bool delete(int elem)
         {
+            if (arrayl == 0)
+                return false;
             int delel = binsearch(elem);
             if (delel == -1)
                 return false;

@@ -269,7 +269,7 @@ namespace AlgoDat_Praktikum
                             case "insert":
                                 Console.Write("Please enter your data: ");
                                 data = Convert.ToInt32(Console.ReadLine());
-                                if (!structure.insert(data))
+                                if (data < 0 || !structure.insert(data))
                                 {
                                     throw new Exception("This key could not be stored.");
                                 }

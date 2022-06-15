@@ -24,6 +24,10 @@ abstract class BaseArray
         public void print()
         {
             Console.Write("| ");
+            for (int i = 0; i < length; i++)
+            {
+
+            }
             foreach (int elem in array)
                 Console.Write(elem + " | ");
         }

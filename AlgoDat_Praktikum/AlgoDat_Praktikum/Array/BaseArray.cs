@@ -24,12 +24,14 @@ abstract class BaseArray
         public void print()
         {
             Console.Write("| ");
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < arrayl; i++)
             {
-
+                Console.Write(array[i] + " | ");
             }
-            foreach (int elem in array)
-                Console.Write(elem + " | ");
+            for (int i = arrayl; i < array.Length; i++)
+            {
+                Console.Write(" " + " | ");
+            }
         }
     }
 }

@@ -371,36 +371,36 @@ namespace AlgoDat_Praktikum
         //}
 
         ////protected Such-Funktion, die auch Einfüg bzw. Lösch-Position zurückgibt
-        protected bool search(ref TreeNode node, int elem)
-        {
-            int count = 0;
-            while (true)
-            {
-                if (node.key == elem)
-                {
-                    return true;
-                }
-                else if (node.key<elem)
-                {
-                    if (node.right == null)
-                    {
-                        return false;
-                    }
-                    else
-                        node = node.right;
-                }
-                else
-                {
-                    if (node.left == null)
-                    {
-                        return false;
-                    }
-                    else
-        node = node.left;
-                }
-                count++;
-            }
-        }
+        //protected bool search(ref TreeNode node, int elem)
+        //{
+        //    int count = 0;
+        //    while (true)
+        //    {
+        //        if (node.key == elem)
+        //        {
+        //            return true;
+        //        }
+        //        else if (node.key<elem)
+        //        {
+        //            if (node.right == null)
+        //            {
+        //                return false;
+        //            }
+        //            else
+        //                node = node.right;
+        //        }
+        //        else
+        //        {
+        //            if (node.left == null)
+        //            {
+        //                return false;
+        //            }
+        //            else
+        //node = node.left;
+        //        }
+        //        count++;
+        //    }
+        //}
 
         // Horizontale Ausgabe eines Trees mit Einrückungen (Code aus Übung)
         public void print()
